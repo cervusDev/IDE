@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": "src",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@application/*": ["src/application/*"],
+      "@config/*": ["src/config/*"],
+      "@domain/*": ["src/domain/*"],
+      "@environment/*": ["src/environment/*"],
+      "@infra/*": ["src/infra/*"],
+      "@shared/*": ["src/shared/*"]
+    }
+  },
+  "include": ["src"]
+}

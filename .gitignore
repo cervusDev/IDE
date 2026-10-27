@@ -1,0 +1,36 @@
+# Dependências
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+
+# Turborepo Cache & Build
+.turbo/
+.cache/
+
+# Next.js (apps/web)
+apps/web/.next/
+apps/web/out/
+
+# TypeScript / Build Outputs (apps/api)
+apps/api/dist/
+apps/api/build/
+*.tsbuildinfo
+
+# Variáveis de Ambiente
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Arquivos do Sistema Operacional / IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

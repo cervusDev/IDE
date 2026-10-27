@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: example_name
+    restart: always
+    environment:
+      POSTGRES_USER: example_user
+      POSTGRES_PASSWORD: example_password
+      POSTGRES_DB: example_db
+    ports:
+      - "5438:5432"
+    volumes:
+      - example_data:/var/lib/postgresql/data
+    networks:
+      - example_network
+
+volumes:
+  example_data:
+
+networks:
+  example_network:
+    driver: bridge
