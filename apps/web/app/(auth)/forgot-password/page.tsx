@@ -58,7 +58,7 @@ export default function ForgotPassword() {
         <p className="mt-8 text-center text-sm text-zinc-600 dark:text-zinc-400">
           Lembrou a senha?{" "}
           <Link
-            href="/login"
+            href="/"
             className="font-medium text-black underline underline-offset-4 dark:text-white"
           >
             Fazer login

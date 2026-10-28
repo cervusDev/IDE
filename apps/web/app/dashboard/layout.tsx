@@ -102,7 +102,7 @@ export default function SidebarLayout({
           </div>
 
           <Link
-            href="/login"
+            href="/"
             className="flex h-9 w-full items-center justify-center rounded-lg border border-black/[.08] text-xs font-medium text-zinc-600 transition-colors hover:bg-black/[.04] dark:border-white/[.145] dark:text-zinc-400 dark:hover:bg-[#1a1a1a] dark:hover:text-white"
           >
             Sair
