@@ -9,6 +9,8 @@ const envSchema = z.object({
     EEnvironment.TESTING,
   ]),
   PORT: z.string(),
+  DATABASE_URL: z.string(),
+  JWT_SECRET: z.string(),
 });
 
 export const envConfig = envSchema.parse(process.env);
