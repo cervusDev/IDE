@@ -8,6 +8,20 @@
       "when": 1793222872659,
       "tag": "0000_create_users_table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793275698914,
+      "tag": "0001_create_psychosocial_screening_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793275982064,
+      "tag": "0002_add_student_ra_column",
+      "breakpoints": true
     }
   ]
 }

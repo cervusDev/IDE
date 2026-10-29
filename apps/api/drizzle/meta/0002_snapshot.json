@@ -1,0 +1,578 @@
+{
+  "id": "d635a037-6786-46da-b816-bf8ba4e5fa70",
+  "prevId": "ad70bc93-e111-4fad-bae9-097adfcf454a",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.family_members": {
+      "name": "family_members",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "informational_screening_id": {
+          "name": "informational_screening_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "age": {
+          "name": "age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "relationship": {
+          "name": "relationship",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "educational_attainment": {
+          "name": "educational_attainment",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact": {
+          "name": "contact",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "family_members_informational_screening_id_informational_screening_id_fk": {
+          "name": "family_members_informational_screening_id_informational_screening_id_fk",
+          "tableFrom": "family_members",
+          "tableTo": "informational_screening",
+          "columnsFrom": [
+            "informational_screening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.informational_screening": {
+      "name": "informational_screening",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "health_unity": {
+          "name": "health_unity",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "registration": {
+          "name": "registration",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nis": {
+          "name": "nis",
+          "type": "varchar(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_name": {
+          "name": "student_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_birth_date": {
+          "name": "student_birth_date",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_color": {
+          "name": "student_color",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_age": {
+          "name": "student_age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_ra": {
+          "name": "student_ra",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "educational_attainment": {
+          "name": "educational_attainment",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "school_name": {
+          "name": "school_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "school_period": {
+          "name": "school_period",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "street_address": {
+          "name": "street_address",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "neighborhood": {
+          "name": "neighborhood",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mother_name": {
+          "name": "mother_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mother_age": {
+          "name": "mother_age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mother_educational_attainment": {
+          "name": "mother_educational_attainment",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mother_occupation": {
+          "name": "mother_occupation",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mother_contact": {
+          "name": "mother_contact",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "father_name": {
+          "name": "father_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "father_age": {
+          "name": "father_age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "father_educational_attainment": {
+          "name": "father_educational_attainment",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "father_occupation": {
+          "name": "father_occupation",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "father_contact": {
+          "name": "father_contact",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gross_household_income": {
+          "name": "gross_household_income",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parents_marital_status": {
+          "name": "parents_marital_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "legal_guardian_name": {
+          "name": "legal_guardian_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "religion": {
+          "name": "religion",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "housing_status": {
+          "name": "housing_status",
+          "type": "housing_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "informational_screening_nis_unique": {
+          "name": "informational_screening_nis_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "nis"
+          ]
+        },
+        "informational_screening_student_ra_unique": {
+          "name": "informational_screening_student_ra_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "student_ra"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.psychosocial_evaluations": {
+      "name": "psychosocial_evaluations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "informational_screening_id": {
+          "name": "informational_screening_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mental_health_history": {
+          "name": "mental_health_history",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pregnancy_and_birth": {
+          "name": "pregnancy_and_birth",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "early_diet": {
+          "name": "early_diet",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "current_diet": {
+          "name": "current_diet",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sleep_routine": {
+          "name": "sleep_routine",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "psychomotor_development": {
+          "name": "psychomotor_development",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "speech_and_language": {
+          "name": "speech_and_language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sphincter_control": {
+          "name": "sphincter_control",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "childhood_diseases": {
+          "name": "childhood_diseases",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "medications": {
+          "name": "medications",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sexuality": {
+          "name": "sexuality",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "schooling_history": {
+          "name": "schooling_history",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tics_and_habits": {
+          "name": "tics_and_habits",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "daily_routine": {
+          "name": "daily_routine",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "participates_in_project": {
+          "name": "participates_in_project",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "technology_access": {
+          "name": "technology_access",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "substance_use": {
+          "name": "substance_use",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "family_dynamics": {
+          "name": "family_dynamics",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assistant_description": {
+          "name": "assistant_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "guardian_perception": {
+          "name": "guardian_perception",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "interview_observations": {
+          "name": "interview_observations",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "psychosocial_evaluations_informational_screening_id_informational_screening_id_fk": {
+          "name": "psychosocial_evaluations_informational_screening_id_informational_screening_id_fk",
+          "tableFrom": "psychosocial_evaluations",
+          "tableTo": "informational_screening",
+          "columnsFrom": [
+            "informational_screening_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.housing_status": {
+      "name": "housing_status",
+      "schema": "public",
+      "values": [
+        "ALUGADO",
+        "PRÓPRIO",
+        "CEDIDO"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
