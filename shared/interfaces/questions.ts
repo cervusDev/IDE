@@ -1,0 +1,23 @@
+export enum EPsicoSocialQuestions {
+  Q1 = 'A criança ou adolecente tem histórico de tratamento em saúde mental?',
+  Q2 = 'Concepção, Gestação e Parto',
+  Q3 = 'Aleitamento e alimentação: (tinha acesso a fruta, verdura e legumes?).',
+  Q4 = 'Alimentação atual: (Histórico de alergia alimentar, seletividade alimentar, como é o acesso a alimentação e quantas refeições são feitas no dia, tem acess a frutas, verduras e legumes?).',
+  Q5 = 'Sono: (Como era quado bebê? Como é atualmente? Hábitos para dormir? Agitado? Wuanto tempo para dormir? Onde dorme? Com quem dorme? Possui distúrbios: insônio, pesadelos, pavor, noturno, sonambulismo, medo de escuro, bruxismo? Enurese noturna?).',
+  Q6 = 'Desenvolvimento psicomotor: Sentar, engatinhar, andar, qual idade? Teve dificuldade? Sofre ou sofreu quedas frequentes? Segura lápis e talher de forma correta? Manipula tesouras?).',
+  Q7 = 'Linguaguem: (Demorou a falar? Problemas na fala? Trocas fonéticas? Fala regredida ou algum outro disturbio?).',
+  Q8 = 'Controle Esfincteriano: (Quem ajudou no desfralde? Enurese? Encoprese? Constipação intestinal? Histórico de infecção urinária?).',
+  Q9 = 'Doença da infância',
+  Q10 = 'Medicações:',
+  Q11 = 'Sexualidade: (Curiosidade, masturbação, precocidade, abuso, distúrbios, como é o assunto para a família?).',
+  Q12 = 'Escolaridade: (Idade que iniciou, adaptação, aprendizagem, reforço escolar, reprovações, comportamentos, relacionamento na escola, maiores dificuldades).',
+  Q13 = 'Manipulação / tiques: (roer unhas, chupar dedo, uso de chupeta e ou mamadeira, cheirinho, puxar cabelo).',
+  Q14 = 'Rotina',
+  Q15 = 'Participa de projeto? Qual?',
+  Q16 = 'Tem acesso a tecnologia? Quanto tempo de tela por dia?',
+  Q17 = 'Contato ou uso de álcool ou drogas? Algum familiar faz uso dessas substâncias?',
+  Q18 = 'Dinamica Familiar: (Quem é a figura de autoridade? Como se relaciona com a figura de autoridade? O responsável pela criança tem rede de apoio? Existem conflitos familiares?).',
+  Q19 = 'Como poderia descrever o assistido?',
+  Q20 = 'Percepção do responsável em relação a mudança do atendido após o ingresso no serviço',
+  Q21 = 'Observações durante a entrevista'
+}
