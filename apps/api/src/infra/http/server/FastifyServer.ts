@@ -1,4 +1,4 @@
-import { IFastifyErrorHandler } from '@infra/http/ErrorHandler/IFastifyErrorHandler';
+import { IFastifyErrorHandler } from '@infra/http/errorHandler/IFastifyErrorHandler';
 import { IFastifyServer, IStartInputData } from './IFastifyServer';
 import Fastify, {
   FastifyInstance,
@@ -19,7 +19,7 @@ import { EEnvironment } from '@config/enums';
 import { HostNotAllowedError } from '@infra/http/errors/HostNotAllowedError';
 import { corsConfig } from '@config/cors';
 import { RateLimitError } from '@infra/http/errors/RateLimitError';
-import { routes } from '@infra/http/routes';
+import { httpRoutes } from '@infra/http/routes';
 import { FastifyRouter } from '@infra/http/routes/FastifyRoutes';
 import { FastifyMiddleware } from '@infra/http/middlewares/FastifyMiddleware';
 
@@ -70,7 +70,7 @@ export class FastifyServer implements IFastifyServer {
   }
 
   public async registerRoutes(): Promise<void> {
-    for (const route of routes) {
+    for (const route of httpRoutes) {
       const router = new FastifyRouter(route.controller);
       const middlewares = route.middlewares?.map((middleware) => {
         const adapter = new FastifyMiddleware(middleware);

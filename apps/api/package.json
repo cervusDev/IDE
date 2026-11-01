@@ -10,7 +10,7 @@
     "start": "node dist/starter.js",
     "lint": "eslint src --ext .ts",
     "db:generate": "npx drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts"
+    "db:migrate": "tsx src/infra/database/migrate.ts"
   },
   "keywords": [],
   "author": "",
@@ -39,6 +39,7 @@
     "bcryptjs": "^3.0.3",
     "dotenv": "^18.0.9",
     "drizzle-orm": "^0.45.4",
+    "fastify": "^5.12.7",
     "fastify-type-provider-zod": "^7.0.0",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.1",

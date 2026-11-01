@@ -1,2 +1,0 @@
-ALTER TABLE "informational_screening" ADD COLUMN "student_ra" varchar(50) NOT NULL;--> statement-breakpoint
-ALTER TABLE "informational_screening" ADD CONSTRAINT "informational_screening_student_ra_unique" UNIQUE("student_ra");

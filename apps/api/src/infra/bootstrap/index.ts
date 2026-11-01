@@ -2,7 +2,7 @@ import { envConfig } from "@config/env";
 import { generalEnv } from "@environment/general";
 import { helperLogger } from "@infra/helper/logger";
 import { IFastifyServer } from "@infra/http/server/IFastifyServer";
-import { IBootstrap } from "@infra/bootstrap/IBoostrap";
+import { IBootstrap } from "@infra/bootstrap/IBootstrap";
 
 export class Bootstrap implements IBootstrap {
   private readonly server: IFastifyServer;
