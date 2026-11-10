@@ -1,0 +1,1 @@
+ALTER TABLE "informational_screening" DROP COLUMN "date";

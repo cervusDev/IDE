@@ -15,13 +15,15 @@ export const housingStatusEnum = pgEnum('housing_status', [
   'CEDIDO',
 ]);
 
+export const genderEnum = pgEnum('gender_enum', ['M', 'F', 'O']);
+
 export const informationalScreeningTable = pgTable('informational_screening', {
   id: uuid('id').defaultRandom().primaryKey(),
   
   // Identificadores
   healthUnity: varchar('health_unity', { length: 255 }).notNull(),
   registration: varchar('registration', { length: 50 }).notNull(),
-  nis: varchar('nis', { length: 11 }).notNull().unique(),
+  nis: varchar('nis', { length: 11 }).unique(),
   
   // Dados do Aluno
   studentName: varchar('student_name', { length: 255 }).notNull(),
@@ -29,18 +31,18 @@ export const informationalScreeningTable = pgTable('informational_screening', {
   studentColor: varchar('student_color', { length: 50 }).notNull(),
   studentAge: integer('student_age').notNull(),
   studentRa: varchar('student_ra', { length: 50 }).notNull().unique(),
-  
-  // Dados Escolares
-  educationalAttainment: varchar('educational_attainment', { length: 255 }).notNull(),
-  schoolName: text('school_name').notNull(),
-  schoolPeriod: varchar('school_period', { length: 100 }).notNull(),
+  studentEducationalAttainment: varchar('student_educational_attainment', { length: 255 }).notNull(),
+  studentSchoolName: text('student_school_name').notNull(),
+  studentSchoolPeriod: varchar('student_school_period', { length: 100 }).notNull(),
+  studentGender: genderEnum('student_gender').notNull(),
+  studentGenderOther: varchar('student_gender_other', { length: 100 }),
   
   // Endereço e Contato
   streetAddress: varchar('street_address', { length: 255 }).notNull(),
   neighborhood: varchar('neighborhood', { length: 255 }).notNull(),
   
   // Dados da Mãe
-  motherName: varchar('mother_name', { length: 255 }).notNull(),
+  motherName: varchar('mother_name', { length: 255 }),
   motherAge: integer('mother_age'),
   motherEducationalAttainment: varchar('mother_educational_attainment', { length: 255 }),
   motherOccupation: varchar('mother_occupation', { length: 255 }),

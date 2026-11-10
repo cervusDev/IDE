@@ -1,0 +1,1 @@
+ALTER TABLE "informational_screening" ALTER COLUMN "nis" DROP NOT NULL;

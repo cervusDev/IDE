@@ -8,6 +8,41 @@
       "when": 1793472392669,
       "tag": "0000_dear_stark_industries",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793660626227,
+      "tag": "0001_lethal_infant_terrible",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793662395118,
+      "tag": "0002_minor_fixer",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793736798873,
+      "tag": "0003_natural_enchantress",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793738681499,
+      "tag": "0004_cultured_enchantress",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794276446782,
+      "tag": "0005_overrated_songbird",
+      "breakpoints": true
     }
   ]
 }

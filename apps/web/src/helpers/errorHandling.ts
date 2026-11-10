@@ -1,4 +1,4 @@
-import { EHttpCodes } from '@/src/enums/http';
+import { EHttpCodes } from '@/enums/http';
 import { AxiosError, isAxiosError } from 'axios';
 import { toast } from 'sonner';
 

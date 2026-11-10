@@ -1,0 +1,1 @@
+ALTER TABLE "informational_screening" ALTER COLUMN "mother_name" DROP NOT NULL;

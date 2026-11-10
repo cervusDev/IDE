@@ -1,5 +1,6 @@
 import { pgTable, uuid, boolean, timestamp } from 'drizzle-orm/pg-core';
 import { informationalScreeningTable } from './informationalScreening';
+import { varchar } from 'drizzle-orm/pg-core';
 
 export const benefitsTable = pgTable('benefits', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -56,6 +57,8 @@ export const benefitsTable = pgTable('benefits', {
   freeTransit: boolean('free_transit').default(false).notNull(), // Passe Livre (transporte)
   inclusionAid: boolean('inclusion_aid').default(false).notNull(), // Auxílio-Inclusão (PCD no mercado de trabalho)
 
+  others: boolean('others').default(false).notNull(),
+  othersDescription: varchar('others_description', { length: 255 }),
   // Timestamps de Controle
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'date' })

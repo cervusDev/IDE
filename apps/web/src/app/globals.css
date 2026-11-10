@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fff; /* Fundo padrão Light (zinc-100) */
+  --foreground: #18181b; /* Texto padrão Light (zinc-900) */
+}
+
+@theme {
+  --color-brand-dark: #051C2C;
+  --color-brand-blue: #307FE2;
+  --color-brand-magenta: #D72685;
+  --color-brand-yellow: #F2CD00;
+  --color-brand-green: #43B02A;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================================
+   ESTILOS GLOBAIS PARA BOTÕES (Light Theme)
+   ========================================= */
+@layer components {
+  /* Botão Principal (Azul) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl px-4 py-2.5 text-sm sm:text-base transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-md active:scale-[0.98] bg-[#307FE2] text-white hover:opacity-80;
+  }
+
+  /* Botão Secundário (Neutro) */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl px-4 py-2.5 text-sm sm:text-base transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-[0.98] bg-zinc-200 text-zinc-800 hover:bg-zinc-300 border border-zinc-300;
+  }
+
+  /* Botão Outline / Com bordas */
+  .btn-outline {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl px-4 py-2.5 text-sm sm:text-base transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-[0.98] border border-zinc-300 text-zinc-700 hover:bg-zinc-100;
+  }
+
+  /* Botão de Perigo / Exclusão */
+  .btn-danger {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl px-4 py-2.5 text-sm sm:text-base transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-[0.98] bg-red-600 text-white hover:bg-red-700;
+  }
+
+  /* Botão com a cor Magenta da paleta */
+  .btn-magenta {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl px-4 py-2.5 text-sm sm:text-base transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-md active:scale-[0.98] bg-[#D72685] text-white hover:opacity-80;
+  }
+}
