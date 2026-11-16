@@ -43,6 +43,41 @@
       "when": 1794276446782,
       "tag": "0005_overrated_songbird",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794515497134,
+      "tag": "0006_sudden_namorita",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794717155379,
+      "tag": "0007_perfect_banshee",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794848386891,
+      "tag": "0008_material_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1794849070087,
+      "tag": "0009_slow_pyro",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1794849140630,
+      "tag": "0010_wakeful_colleen_wing",
+      "breakpoints": true
     }
   ]
 }

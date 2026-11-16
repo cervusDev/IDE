@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { formColumns } from "./list/columns";
@@ -10,8 +11,36 @@ import { filterFields } from "./list/filter-fields";
 import { Pagination, PaginationMeta } from "@/components/ui/pagination";
 import { FormListItem, FormFilters as FormFiltersType } from "./list/types";
 
+const ALL_MOCK_FORMS: FormListItem[] = [
+  { id: "1", registration: "MAT-2026-001", healthUnity: "UBS Central", nis: "123.45678.90-1", studentName: "João Pedro Silva", studentAge: "10", studentRa: "98765432-X", legalGuardianName: "Maria da Silva", createdAt: "10/11/2026" },
+  { id: "2", registration: "MAT-2026-002", healthUnity: "UBS Norte", nis: "223.45678.90-2", studentName: "Ana Clara Souza", studentAge: "9", studentRa: "87654321-Y", legalGuardianName: "Carlos Souza", createdAt: "10/11/2026" },
+  { id: "3", registration: "MAT-2026-003", healthUnity: "UBS Sul", nis: "323.45678.90-3", studentName: "Lucas Gabriel", studentAge: "11", studentRa: "76543210-Z", legalGuardianName: "Juliana Gabriel", createdAt: "10/11/2026" },
+  { id: "4", registration: "MAT-2026-004", healthUnity: "UBS Leste", nis: "423.45678.90-4", studentName: "Beatriz Lima", studentAge: "8", studentRa: "65432109-W", legalGuardianName: "Roberto Lima", createdAt: "10/11/2026" },
+  { id: "5", registration: "MAT-2026-005", healthUnity: "UBS Oeste", nis: "523.45678.90-5", studentName: "Gabriel Santos", studentAge: "12", studentRa: "54321098-V", legalGuardianName: "Fernanda Santos", createdAt: "10/11/2026" },
+  { id: "6", registration: "MAT-2026-006", healthUnity: "UBS Central", nis: "623.45678.90-6", studentName: "Larissa Oliveira", studentAge: "7", studentRa: "43210987-U", legalGuardianName: "Marcos Oliveira", createdAt: "10/11/2026" },
+  { id: "7", registration: "MAT-2026-007", healthUnity: "UBS Norte", nis: "723.45678.90-7", studentName: "Matheus Henrique", studentAge: "10", studentRa: "32109876-T", legalGuardianName: "Patrícia Henrique", createdAt: "10/11/2026" },
+  { id: "8", registration: "MAT-2026-008", healthUnity: "UBS Sul", nis: "823.45678.90-8", studentName: "Camila Rodrigues", studentAge: "9", studentRa: "21098765-S", legalGuardianName: "Bruno Rodrigues", createdAt: "10/11/2026" },
+  { id: "9", registration: "MAT-2026-009", healthUnity: "UBS Leste", nis: "923.45678.90-9", studentName: "Vitor Hugo", studentAge: "11", studentRa: "10987654-R", legalGuardianName: "Renata Hugo", createdAt: "10/11/2026" },
+  { id: "10", registration: "MAT-2026-010", healthUnity: "UBS Oeste", nis: "023.45678.90-0", studentName: "Isabela Cristina", studentAge: "8", studentRa: "09876543-Q", legalGuardianName: "Marcelo Cristina", createdAt: "10/11/2026" },
+  { id: "11", registration: "MAT-2026-011", healthUnity: "UBS Central", nis: "113.45678.90-1", studentName: "Rafael Costa", studentAge: "10", studentRa: "98765431-P", legalGuardianName: "Sandra Costa", createdAt: "10/11/2026" },
+];
+
 const FormListView = () => {
-  const [filters, setFilters] = useState<FormFiltersType>({
+  const methods = useForm<FormFiltersType>({
+    defaultValues: {
+      healthUnity: "",
+      nis: "",
+      registration: "",
+      studentName: "",
+      studentAge: "",
+      studentRa: "",
+    },
+  });
+
+  const { reset } = methods;
+
+  // Estado separado apenas para os filtros que foram EFETIVAMENTE APLICADOS no botão "Pesquisar"
+  const [appliedFilters, setAppliedFilters] = useState<FormFiltersType>({
     healthUnity: "",
     nis: "",
     registration: "",
@@ -22,7 +51,7 @@ const FormListView = () => {
 
   const [pagination, setPagination] = useState<PaginationMeta>({
     page: 1,
-    limit: 10,
+    limit: 8,
     totalItems: 0,
     totalPages: 1,
   });
@@ -30,61 +59,72 @@ const FormListView = () => {
   const [data, setData] = useState<FormListItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Função simulada de busca no backend
-  const fetchFormsFromBackend = useCallback(async (currentFilters: FormFiltersType, page: number, limit: number) => {
+  // A filtragem agora usa estritamente os filtros aplicados, e não o watch em tempo real
+  const filteredForms = useMemo(() => {
+    return ALL_MOCK_FORMS.filter((item) => {
+      const matchName = appliedFilters.studentName
+        ? item.studentName.toLowerCase().includes(appliedFilters.studentName.toLowerCase())
+        : true;
+      const matchUnity = appliedFilters.healthUnity
+        ? item.healthUnity.toLowerCase().includes(appliedFilters.healthUnity.toLowerCase())
+        : true;
+      const matchNis = appliedFilters.nis ? item?.nis?.includes(appliedFilters.nis) : true;
+      const matchRegistration = appliedFilters.registration ? item.registration.includes(appliedFilters.registration) : true;
+      const matchRa = appliedFilters.studentRa ? item.studentRa.includes(appliedFilters.studentRa) : true;
+
+      return matchName && matchUnity && matchNis && matchRegistration && matchRa;
+    });
+  }, [appliedFilters]);
+
+  const fetchFormsFromBackend = useCallback(async (page: number, limit: number) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      await new Promise((resolve) => setTimeout(resolve, 400));
 
-      const mockData: FormListItem[] = [
-        {
-          id: "1",
-          registration: "MAT-2026-001",
-          healthUnity: "UBS Central",
-          nis: "123.45678.90-1",
-          studentName: "João Pedro Silva",
-          studentAge: "10",
-          studentRa: "98765432-X",
-          legalGuardianName: "Maria da Silva",
-          createdAt: "10/11/2026",
-        },
-      ];
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+      const paginatedData = filteredForms.slice(startIndex, endIndex);
 
-      setData(mockData);
+      const totalItems = filteredForms.length;
+      const totalPages = Math.ceil(totalItems / limit) || 1;
+
+      setData(paginatedData);
       setPagination({
         page,
         limit,
-        totalItems: 1,
-        totalPages: 1,
+        totalItems,
+        totalPages,
       });
     } catch (error) {
       console.error("Erro ao buscar formulários:", error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [filteredForms]);
 
+  // O useEffect agora depende apenas da paginação e dos filtros aplicados
   useEffect(() => {
-    fetchFormsFromBackend(filters, pagination.page, pagination.limit);
-  }, [filters, pagination.page, pagination.limit, fetchFormsFromBackend]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchFormsFromBackend(pagination.page, pagination.limit);
+  }, [appliedFilters, pagination.page, pagination.limit, fetchFormsFromBackend]);
 
-  // Ação ao submeter o formulário de filtro
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = (formData: FormFiltersType) => {
+    // Disparado somente ao clicar no botão "Pesquisar"
+    setAppliedFilters(formData);
     setPagination((prev) => ({ ...prev, page: 1 }));
-    // Os dados já são atualizados no estado por causa do binding do DataFilter
   };
 
-  // Ação ao limpar os filtros
   const handleResetFilters = () => {
-    setFilters({
+    reset(); // Reseta os campos do formulário visualmente
+    const emptyFilters = {
       healthUnity: "",
       nis: "",
       registration: "",
       studentName: "",
       studentAge: "",
       studentRa: "",
-    });
+    };
+    setAppliedFilters(emptyFilters); // Reseta os filtros aplicados
     setPagination((prev) => ({ ...prev, page: 1 }));
   };
 
@@ -110,10 +150,8 @@ const FormListView = () => {
       </div>
 
       <DataFilter
-        title="Filtrar Cadastros"
         fields={filterFields}
-        filters={filters}
-        setFilters={setFilters}
+        methods={methods}
         onSearch={handleSearch}
         onReset={handleResetFilters}
       />

@@ -10,6 +10,7 @@ export const createScreeningControllerBody = z.object({
   health_unity: z.string().min(1, 'A unidade de saúde é obrigatória'),
   registration: z.string().min(1, 'A matrícula é obrigatória'),
   nis: z.string().optional(),
+  assignee_id: z.string(),
 
   // Dados do Aluno
   student_name: z.string().min(1, 'O nome do aluno é obrigatório'),
@@ -32,14 +33,14 @@ export const createScreeningControllerBody = z.object({
   // Dados da Mãe (Opcionais)
   mother_name: z.string().optional(),
   mother_age: z.coerce.string().optional(),
-  mother_educational_attainment: z.string().optional(),
+  mother_educational_attainment: z.string().nullable(),
   mother_occupation: z.string().optional(),
-  mother_contact: z.string().optional(),
+  mother_contact: z.string().nullable(),
 
   // Dados do Pai (Opcionais)
   father_name: z.string().optional(),
   father_age: z.coerce.string().optional(),
-  father_educational_attainment: z.string().optional(),
+  father_educational_attainment: z.string().nullable(),
   father_occupation: z.string().optional(),
   father_contact: z.string().optional(),
 

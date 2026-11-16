@@ -1,0 +1,1 @@
+ALTER TABLE "informational_screening" DROP CONSTRAINT "informational_screening_student_ra_unique";

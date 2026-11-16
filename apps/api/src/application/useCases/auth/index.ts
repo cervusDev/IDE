@@ -34,6 +34,8 @@ export class AuthUseCase implements IUseCase<IInputData, IOutputData> {
     const token = this.tokenProvider.generate({
       payload: {
         id: user.id,
+        name: user.name,
+        email: inputData.email,
         is_active: user.isActive,
       },
     });

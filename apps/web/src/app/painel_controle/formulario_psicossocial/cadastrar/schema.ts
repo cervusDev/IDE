@@ -4,8 +4,7 @@ import { z } from "zod";
 // ------------------------------------------------------
 // 1. Schemas individuais para cada etapa
 // ------------------------------------------------------
-
-const housingStatusValues = ['ALUGADA', 'PRÓPRIA', 'CEDIDA'] as const;
+const housingStatusValues = ['ALUGADO', 'PRÓPRIO', 'CEDIDO'] as const;
 const genderEnum = ['M', 'F', 'O'] as const;
 
 // Passo 1: Dados Pessoais
@@ -105,8 +104,8 @@ export const familyMemberSchema = z.object({
   fullName: z.string().min(1, 'O nome completo é obrigatório').max(255),
   age: z.string().min(1, 'A idade é obrigatória'),
   relationship: z.string().min(1, 'O grau de parentesco é obrigatório').max(100),
-  educationalAttainment: z.string().max(255).optional().or(z.literal('')),
-  contact: z.string().max(50).optional().or(z.literal('')),
+  educationalAttainment: z.string().max(255),
+  contact: z.string().max(50),
 });
 
 export const step3Schema = z.object({
@@ -146,13 +145,6 @@ export const step4Schema = z.object({
   interviewObservations: z.string().optional().or(z.literal('')),
 });
 
-// Passo 5: Confirmação e Termos
-export const step5Schema = z.object({
-  aceitouTermos: z.boolean({
-    message: "Você precisa aceitar os termos de uso",
-  }),
-});
-
 // ------------------------------------------------------
 // 2. Schema Completo (União usando .extend() recomendado)
 // ------------------------------------------------------
@@ -160,7 +152,6 @@ export const fullFormSchema = step1Schema
   .extend(step2Schema.shape)
   .extend(step3Schema.shape)
   .extend(step4Schema.shape)
-  .extend(step5Schema.shape);
 
 // Tipo TypeScript gerado a partir do schema completo
 export type FormSchemaType = z.infer<typeof fullFormSchema>;
@@ -173,5 +164,4 @@ export const stepSchemas = [
   step2Schema,
   step3Schema,
   step4Schema,
-  step5Schema,
 ];

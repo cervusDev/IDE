@@ -7,8 +7,30 @@ import { IFindByUserEmailRepositoryInputData } from './dtos/findByEmail/InputDat
 import { IFindByUserEmailRepositoryOutputData } from './dtos/findByEmail/OutputData';
 import { eq } from 'drizzle-orm';
 import { IListUserRepositoryOutputData } from './dtos/list/OutputData';
+import { IFindUserByIdInputData } from './dtos/findById/InputData';
+import { IFindUserByIdOutputData } from './dtos/findById/OutputData';
 
 export class UserRepositoryDatabase implements IUserRepository {
+public async findById(
+    inputData: IFindUserByIdInputData
+  ): Promise<IFindUserByIdOutputData> {
+    try {
+      const database = drizzleDatabase.getInstance();
+      const [user] = await database
+        .select({
+          id: usersTable.id,
+        })
+        .from(usersTable)
+        .where(eq(usersTable.id, inputData.id))
+        .limit(1);
+
+      return {
+        id: user?.id ?? null,
+      };
+    } catch (err) {
+      throw new DrizzleORMError(JSON.stringify(err));
+    }
+  }
   public async list(): Promise<IListUserRepositoryOutputData> {
     try {
       const database = drizzleDatabase.getInstance();
@@ -38,6 +60,8 @@ export class UserRepositoryDatabase implements IUserRepository {
         .limit(1);
       const output: IFindByUserEmailRepositoryOutputData = {
         id: user.id,
+        name: user.name,
+        email: user.email,
         password: user.password,
         isActive: user.isActive,
       };

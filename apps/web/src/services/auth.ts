@@ -36,7 +36,7 @@ interface IAuthRepository {
   login(input: ILoginInput): Promise<ILoginOutput>;
 }
 
-export class AuthService implements IAuthRepository {
+class AuthService implements IAuthRepository {
   public async login(input: ILoginInput): Promise<ILoginOutput> {
     const { data } = await apiClient.post<AxiosResponse<ILoginResponse>>(
       "/auth",
@@ -54,3 +54,5 @@ export class AuthService implements IAuthRepository {
     };
   }
 }
+
+export const authService = new AuthService();

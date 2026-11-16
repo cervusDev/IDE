@@ -1,0 +1,4 @@
+ALTER TABLE "informational_screening" ADD COLUMN "assignee_id" uuid;--> statement-breakpoint
+ALTER TABLE "informational_screening" ADD COLUMN "co_author_id" uuid;--> statement-breakpoint
+ALTER TABLE "informational_screening" ADD CONSTRAINT "informational_screening_assignee_id_users_id_fk" FOREIGN KEY ("assignee_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "informational_screening" ADD CONSTRAINT "informational_screening_co_author_id_users_id_fk" FOREIGN KEY ("co_author_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;

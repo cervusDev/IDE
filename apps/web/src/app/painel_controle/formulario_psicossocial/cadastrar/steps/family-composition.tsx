@@ -88,7 +88,6 @@ export const StepFamilyComposition = ({ readOnly = false }: StepFamilyCompositio
                 <Input
                   label="Nome Completo"
                   placeholder="Ex: Ana Souza"
-                  className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                   {...register(`members.${index}.fullName`)}
                 />
               </div>
@@ -99,7 +98,6 @@ export const StepFamilyComposition = ({ readOnly = false }: StepFamilyCompositio
                   label="Idade"
                   type="number"
                   placeholder="Ex: 40"
-                  className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                   {...register(`members.${index}.age`)}
                 />
               </div>
@@ -109,7 +107,6 @@ export const StepFamilyComposition = ({ readOnly = false }: StepFamilyCompositio
                 <Input
                   label="Parentesco"
                   placeholder="Ex: Mãe, Irmão, Avó..."
-                  className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                   {...register(`members.${index}.relationship`)}
                 />
               </div>
@@ -119,7 +116,6 @@ export const StepFamilyComposition = ({ readOnly = false }: StepFamilyCompositio
                 <Input
                   label="Escolaridade (Opcional)"
                   placeholder="Ex: Ensino Superior Completo"
-                  className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                   {...register(`members.${index}.educationalAttainment`)}
                 />
               </div>
@@ -129,7 +125,6 @@ export const StepFamilyComposition = ({ readOnly = false }: StepFamilyCompositio
                 <Input
                   label="Contato / Telefone (Opcional)"
                   placeholder="(00) 00000-0000"
-                  className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                   {...register(`members.${index}.contact`)}
                 />
               </div>

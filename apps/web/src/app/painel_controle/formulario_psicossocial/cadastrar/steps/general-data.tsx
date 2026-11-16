@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { FormSchemaType } from "../schema";
 import { Input } from "@/components/inputs/input";
 import { Select } from "@/components/inputs/select";
+import CommentEditor from "@/components/inputs/editor";
 
 export const StepGeneralData = () => {
   const {
@@ -26,7 +27,7 @@ export const StepGeneralData = () => {
       </div>
 
       {/* SEÇÃO 1: Dados de Registro e Saúde */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>Dados de Registro e Saúde</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -39,15 +40,27 @@ export const StepGeneralData = () => {
               <Input
                 label="Unidade de Saúde"
                 placeholder="Ex: UBS Central"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("healthUnity")}
+              />
+              <CommentEditor
+                externalLogsIsOpen={false}
+                // initialContent={
+                //   (useDraftStore
+                //     .getState()
+                //     .get(`${location.pathname}:comment`)?.content as
+                //     | string
+                //     | undefined) ?? ''
+                // }
+                // isDisabled={!!ticket?.closingDate}
+                onSubmit={() => { }}
+                isDisabled={false}
+              // onUpdate={handleUpdateCommentDraft}
               />
             </div>
             <div className="md:col-span-5">
               <Input
                 label="Matrícula"
                 placeholder="Nº de matrícula"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("registration")}
               />
             </div>
@@ -56,7 +69,7 @@ export const StepGeneralData = () => {
       </details>
 
       {/* SEÇÃO 2: Informações do Atendido */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>Informações do Atendido</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -69,7 +82,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Nome Completo do atendido"
                 placeholder="Ex: João da Silva"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentName")}
               />
             </div>
@@ -77,7 +89,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Data de Nascimento"
                 placeholder="DD/MM/AAAA"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentBirthDate")}
               />
             </div>
@@ -86,7 +97,6 @@ export const StepGeneralData = () => {
                 label="Idade"
                 type="number"
                 placeholder="Ex: 10"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentAge")}
               />
             </div>
@@ -95,7 +105,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Cor / Raça"
                 placeholder="Ex: Parda, Branca..."
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentColor")}
               />
             </div>
@@ -103,7 +112,6 @@ export const StepGeneralData = () => {
               <Input
                 label="RA (Registro atendido)"
                 placeholder="Nº do RA"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentRa")}
               />
             </div>
@@ -111,7 +119,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Escolaridade"
                 placeholder="Ex: 5º Ano EF"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentEducationalAttainment")}
               />
             </div>
@@ -120,7 +127,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Nome da Escola"
                 placeholder="Ex: E.E. Professor João"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentSchoolName")}
               />
             </div>
@@ -128,7 +134,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Período Escolar"
                 placeholder="Ex: Manhã / Tarde"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("studentSchoolPeriod")}
               />
             </div>
@@ -160,7 +165,7 @@ export const StepGeneralData = () => {
       </details>
 
       {/* SEÇÃO 3: Endereço */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>Endereço Familiar</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -173,7 +178,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Endereço (Rua, Nº, Compl.)"
                 placeholder="Ex: Rua das Flores, 123"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("streetAddress")}
               />
             </div>
@@ -181,7 +185,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Bairro"
                 placeholder="Ex: Centro"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("neighborhood")}
               />
             </div>
@@ -190,7 +193,7 @@ export const StepGeneralData = () => {
       </details>
 
       {/* SEÇÃO 4: Filiação (Mãe e Pai) */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>Filiação (Opcional)</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -207,7 +210,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Nome da Mãe"
                 placeholder="Nome completo"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("motherName")}
               />
             </div>
@@ -216,7 +218,6 @@ export const StepGeneralData = () => {
                 label="Idade"
                 type="number"
                 placeholder="Ex: 35"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("motherAge")}
               />
             </div>
@@ -224,7 +225,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Contato da Mãe"
                 placeholder="(00) 00000-0000"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("motherContact")}
               />
             </div>
@@ -232,7 +232,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Escolaridade da Mãe"
                 placeholder="Ex: Ensino Médio Completo"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("motherEducationalAttainment")}
               />
             </div>
@@ -240,7 +239,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Ocupação da Mãe"
                 placeholder="Ex: Autônoma"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("motherOccupation")}
               />
             </div>
@@ -255,7 +253,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Nome do Pai"
                 placeholder="Nome completo"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("fatherName")}
               />
             </div>
@@ -264,7 +261,6 @@ export const StepGeneralData = () => {
                 label="Idade"
                 type="number"
                 placeholder="Ex: 38"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("fatherAge")}
               />
             </div>
@@ -272,7 +268,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Contato do Pai"
                 placeholder="(00) 00000-0000"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("fatherContact")}
               />
             </div>
@@ -280,7 +275,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Escolaridade do Pai"
                 placeholder="Ex: Ensino Fundamental"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("fatherEducationalAttainment")}
               />
             </div>
@@ -288,7 +282,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Ocupação do Pai"
                 placeholder="Ex: Mecânico"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("fatherOccupation")}
               />
             </div>
@@ -297,7 +290,7 @@ export const StepGeneralData = () => {
       </details>
 
       {/* SEÇÃO 5: Informações Socioeconômicas e Responsável Legal */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>Condições Socioeconômicas e Guarda</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -310,7 +303,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Nome do Responsável Legal"
                 placeholder="Ex: Maria da Silva"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("legalGuardianName")}
               />
             </div>
@@ -318,7 +310,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Estado Civil dos Pais/Responsáveis"
                 placeholder="Ex: Casados, Divorciados..."
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("parentMaritalStatus")}
               />
             </div>
@@ -328,7 +319,6 @@ export const StepGeneralData = () => {
                 type="number"
                 step="0.01"
                 placeholder="Ex: 2500.00"
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("grossHouseholdIncome")}
               />
             </div>
@@ -336,7 +326,6 @@ export const StepGeneralData = () => {
               <Input
                 label="Religião"
                 placeholder="Ex: Católica, Evangélica..."
-                className="bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 text-base sm:text-lg py-3 focus:border-[#307FE2] focus:ring-[#307FE2]"
                 {...register("religion")}
               />
             </div>
@@ -345,9 +334,9 @@ export const StepGeneralData = () => {
                 label="Situação da Moradia"
                 name="housingStatus"
                 options={[
-                  { label: "Própria", value: "PRÓPRIA" },
-                  { label: "Alugada", value: "ALUGADA" },
-                  { label: "Cedida", value: "CEDIDA" },
+                  { label: "Própria", value: "PRÓPRIO" },
+                  { label: "Alugada", value: "ALUGADO" },
+                  { label: "Cedida", value: "CEDIDO" },
                 ]}
               />
             </div>

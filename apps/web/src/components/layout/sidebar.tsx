@@ -4,8 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuthStore } from "@/contexts/auth";
 
 export function Sidebar() {
+  const { user } = useAuthStore();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -44,16 +46,15 @@ export function Sidebar() {
 
       {/* Sidebar Lateral */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col justify-between border-r border-zinc-200 bg-white p-6 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 shadow-sm ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col justify-between border-r border-zinc-200 bg-white p-6 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 shadow-sm ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="flex flex-col gap-8">
           {/* Header da Sidebar */}
           <div className="flex items-center justify-between">
             <Link href="/painel_controle" className="flex items-center gap-2">
               <Image
-                className="h-20 w-[100px]"
+                className="h-20 w-auto object-contain "
                 src="/logo.png"
                 alt="IDE logo"
                 width={100}
@@ -83,11 +84,10 @@ export function Sidebar() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsSidebarOpen(false)}
-                    className={`flex h-10 items-center rounded-xl px-3 text-sm font-medium transition-colors ${
-                      isActive
+                    className={`flex h-10 items-center rounded-xl px-3 text-sm font-medium transition-colors ${isActive
                         ? "bg-[#F2CD00] text-white font-semibold shadow-sm"
                         : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
-                    }`}
+                      }`}
                   >
                     {item.name}
                   </Link>
@@ -97,7 +97,6 @@ export function Sidebar() {
           </nav>
         </div>
 
-        {/* Rodapé da Sidebar / Usuário */}
         <div className="flex flex-col gap-4 border-t border-zinc-200 pt-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -106,10 +105,10 @@ export function Sidebar() {
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-sm font-medium text-zinc-900">
-                  Usuário
+                  {user?.name}
                 </span>
                 <span className="text-xs text-zinc-500">
-                  seu@email.com
+                  {user?.email}
                 </span>
               </div>
             </div>

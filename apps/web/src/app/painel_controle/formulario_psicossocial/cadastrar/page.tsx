@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { StepReview } from "./steps/review";
 import { Stepper } from "@/components/ui/stepper";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +12,8 @@ import { StepFamilyComposition } from "./steps/family-composition";
 import { fullFormSchema, stepSchemas, FormSchemaType } from "./schema";
 import { useForm, FormProvider, Resolver, useWatch } from "react-hook-form";
 import { StepPsychosocialEvaluation } from "./steps/psychosocial-evaluation";
-import { useRouter } from "next/navigation";
+import { useCreateScreening } from "@/hooks/useScreening";
+import { useAuthStore } from "@/contexts/auth";
 
 interface PsychosocialFormProps {
   initialData?: Partial<FormSchemaType>;
@@ -21,6 +23,8 @@ interface PsychosocialFormProps {
 
 export const PsychosocialForm = ({ initialData, formId, readOnly = false }: PsychosocialFormProps) => {
   const router = useRouter();
+  const { user } = useAuthStore();
+  const { mutate, isPending } = useCreateScreening();
   const [currentStep, setCurrentStep] = useState(firstStepValue);
   const isEditing = Boolean(formId) && !readOnly;
 
@@ -51,7 +55,6 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
 
   const handleNext = async () => {
     if (readOnly) {
-      // No modo leitura, avança livremente sem validar campos obrigatórios
       setCurrentStep((prev) => Math.min(prev + 1, stepTitles.length));
       return;
     }
@@ -66,30 +69,108 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
 
   const handleBack = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
-  const onSubmit = async (data: FormSchemaType) => {
+  const onSubmit = useCallback((data: FormSchemaType) => {
     if (readOnly) return;
-
-    try {
-      const endpoint = isEditing
-        ? `https://api.sua-aplicacao.com/endpoint/${formId}`
-        : "https://api.sua-aplicacao.com/endpoint";
-
-      const method = isEditing ? "PUT" : "POST";
-
-      const response = await fetch(endpoint, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        alert(isEditing ? "Atualizado com sucesso!" : "Criado com sucesso!");
-        router.push("/painel_controle/formulario_psicossocial/list");
-      }
-    } catch (error) {
-      console.error("Erro ao salvar:", error);
-    }
-  };
+    mutate({
+      benefits: {
+        birthAid: data.birthAid,
+        childLaborEradication: data.childLaborEradication,
+        continuousCashBenefit: data.continuousCashBenefit,
+        elderlyCard: data.elderlyCard,
+        emergencyAid: data.emergencyAid,
+        familyGrant: data.familyGrant,
+        feeExemption: data.feeExemption,
+        freeTransit: data.freeTransit,
+        gasAid: data.gasAid,
+        greenGrant: data.greenGrant,
+        inclusionAid: data.inclusionAid,
+        menstrualDignityProgram: data.menstrualDignityProgram,
+        milkProgram: data.milkProgram,
+        others: data.others,
+        othersDescription: data.othersDescription,
+        participatesInPaefi: data.participatesInPaefi,
+        participatesInPaif: data.participatesInPaif,
+        peDeMeia: data.peDeMeia,
+        socialEnergyTariff: data.socialEnergyTariff,
+        socialHousing: data.socialHousing,
+        socialRent: data.socialRent,
+        socialWaterTariff: data.socialWaterTariff,
+        stateIncomeAid: data.stateIncomeAid,
+        youthId: data.youthId
+      },
+      informational: {
+        assigneeId: String(user?.id),
+        fatherAge: Number(data.fatherAge),
+        fatherContact: data.fatherContact,
+        fatherEducationalAttainment: data.fatherEducationalAttainment || null,
+        fatherName: data.fatherName,
+        fatherOccupation: data.fatherOccupation,
+        grossHouseholdIncome: String(data.grossHouseholdIncome),
+        healthUnity: data.healthUnity,
+        housingStatus: data.housingStatus,
+        legalGuardianName: data.legalGuardianName,
+        motherAge: Number(data.motherAge),
+        motherContact: data.motherContact || null,
+        motherEducationalAttainment: data.motherEducationalAttainment || null,
+        motherName: data.motherName,
+        motherOccupation: data.motherOccupation,
+        neighborhood: data.neighborhood,
+        parentsMaritalStatus: data.parentMaritalStatus,
+        registration: data.registration,
+        religion: data.religion,
+        streetAddress: data.streetAddress,
+        studentAge: String(data.studentAge),
+        studentBirthDate: data.studentBirthDate,
+        studentColor: data.studentColor,
+        studentEducationalAttainment: data.studentEducationalAttainment,
+        studentGender: data.studentGender,
+        studentGenderOther: data.studentGenderOther,
+        studentName: data.studentName,
+        studentRa: data.studentRa,
+        studentSchoolName: data.studentSchoolName,
+        studentSchoolPeriod: data.studentSchoolPeriod,
+        nis: data.nis
+      },
+      psychosocialEvaluation: {
+        assistantDescription: data.assistantDescription,
+        childhoodDiseases: data.childhoodDiseases,
+        currentDiet: data.currentDiet,
+        dailyRoutine: data.dailyRoutine,
+        earlyDiet: data.earlyDiet,
+        familyDynamics: data.familyDynamics,
+        guardianPerception: data.guardianPerception,
+        interviewObservations: data.interviewObservations,
+        medications: data.medications,
+        mentalHealthHistory: data.mentalHealthHistory,
+        participatesInProject: data.participatesInProject,
+        pregnancyAndBirth: data.pregnancyAndBirth,
+        psychomotorDevelopment: data.psychomotorDevelopment,
+        schoolingHistory: data.schoolingHistory,
+        sexuality: data.sexuality,
+        sleepRoutine: data.sleepRoutine,
+        speechAndLanguage: data.speechAndLanguage,
+        sphincterControl: data.sphincterControl,
+        substanceUse: data.substanceUse,
+        technologyAccess: data.technologyAccess,
+        ticsAndHabits: data.ticsAndHabits,
+      },
+      familyMembers: data.members.map(item => ({
+        age: item.age,
+        contact: item.contact,
+        educationalAttainment: item.educationalAttainment,
+        fullName: item.fullName,
+        relationship: item.relationship
+      }))
+    }, {
+      onSuccess: () => {
+        alert('Triagem criada com sucesso!');
+        router.push('/painel_controle/formulario_psicossocial/')
+      },
+      onError: () => {
+        alert('Falha ao salvar a triagem. Verifique os dados.');
+      },
+    });
+  }, [mutate, readOnly, router, user?.id])
 
   return (
     <div className="w-full max-w-5xl mx-auto p-6 sm:p-8 bg-white rounded-2xl border border-zinc-200 shadow-sm my-6 text-zinc-900">
@@ -102,7 +183,7 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
               : "Novo Cadastro Psicossocial"}
         </h2>
         {readOnly && (
-          <span className="px-3 py-1 bg-zinc-100 text-zinc-600 text-xs font-semibold rounded-full border border-zinc-200">
+          <span className="px-3 py-1 bg-[#43B02A] text-[#fff] text-xs font-semibold rounded-full border border-zinc-200">
             Modo Leitura
           </span>
         )}
@@ -112,7 +193,6 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6">
-          {/* O fieldset disabled bloqueia interações em todos os inputs filhos no modo leitura */}
           <fieldset disabled={readOnly} className="space-y-6">
             {currentStep === 1 && <StepGeneralData />}
             {currentStep === 2 && <StepSocialPrograms />}
@@ -126,7 +206,7 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
               type="button"
               onClick={handleBack}
               disabled={currentStep === 1}
-              className="px-6 py-2.5 bg-[#F2CD00] text-zinc-900 rounded-xl disabled:opacity-40 hover:opacity-85 font-semibold transition-opacity cursor-pointer shadow-sm"
+              className="px-6 py-2.5 bg-zinc-100 text-zinc-700 hover:bg-zinc-200 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed font-semibold transition-all cursor-pointer shadow-sm"
             >
               Voltar
             </button>
@@ -135,6 +215,7 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
               {readOnly ? (
                 <button
                   type="button"
+                  disabled={isPending}
                   onClick={() => router.push("/painel_controle/formulario_psicossocial/")}
                   className="px-6 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl font-semibold transition-all cursor-pointer"
                 >
@@ -153,7 +234,7 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
               ) : !readOnly ? (
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isPending}
                   className="px-6 py-2.5 bg-[#43B02A] hover:opacity-80 text-white rounded-xl font-bold transition-opacity shadow-sm disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? "Salvando..." : isEditing ? "Salvar Alterações" : "Finalizar & Enviar"}

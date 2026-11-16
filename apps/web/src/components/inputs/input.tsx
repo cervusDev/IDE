@@ -35,13 +35,11 @@ export function Input({ name, label, type = "text", ...props }: InputProps) {
           type={inputType}
           {...register(name)}
           {...props}
-          className={`h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-zinc-900 placeholder:text-zinc-500 placeholder:opacity-100 focus:outline-none focus:ring-2 focus:ring-[#D72685] focus:border-[#D72685] transition-all shadow-sm ${
-            isPassword ? "pr-11" : ""
-          } ${
-            error
+          className={`h-11 focus:border-[#307FE2] w-full rounded-xl border bg-white px-3.5 text-sm text-zinc-900 placeholder:text-zinc-500 placeholder:opacity-100 focus:outline-none focus:ring-2 focus:ring-[#D72685] focus:border-[#D72685] transition-all shadow-sm ${isPassword ? "pr-11" : ""
+            } ${error
               ? "border-red-500 focus:ring-red-500 focus:border-red-500"
               : "border-zinc-300"
-          }`}
+            }`}
         />
 
         {/* Botão de Exibir/Ocultar Senha integrado nativamente */}

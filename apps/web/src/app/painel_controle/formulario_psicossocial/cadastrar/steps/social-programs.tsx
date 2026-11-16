@@ -22,7 +22,7 @@ export const StepSocialPrograms = () => {
       </div>
 
       {/* Cadastro Único */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>Cadastro Único</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -43,7 +43,7 @@ export const StepSocialPrograms = () => {
       </details>
 
       {/* 1. Transferência de Renda e Auxílios Diretos */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>1. Transferência de Renda e Auxílios Diretos</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -63,7 +63,7 @@ export const StepSocialPrograms = () => {
       </details>
 
       {/* 2. Tarifas Sociais e Serviços Básicos */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>2. Tarifas Sociais e Serviços Básicos</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -79,7 +79,7 @@ export const StepSocialPrograms = () => {
       </details>
 
       {/* 3. Educação, Infância e Juventude */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>3. Educação, Infância e Juventude</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -97,7 +97,7 @@ export const StepSocialPrograms = () => {
       </details>
 
       {/* 4. Habitação e Infraestrutura */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>4. Habitação e Infraestrutura</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -114,7 +114,7 @@ export const StepSocialPrograms = () => {
       </details>
 
       {/* 5. Acompanhamento Socioassistencial (CRAS / CREAS) */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>5. Acompanhamento Socioassistencial (CRAS / CREAS)</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -131,7 +131,7 @@ export const StepSocialPrograms = () => {
       </details>
 
       {/* 6. Isenções, Documentos e Outros */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>6. Isenções, Documentos e Outros</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">

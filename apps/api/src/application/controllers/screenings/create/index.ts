@@ -21,6 +21,7 @@ export class CreateScreeningController implements IController {
     const { body } = request;
 
     await this.createScreeningUseCase.execute({
+      assigneeId: body.assignee_id,
       benefits: {
         birthAid: body.birth_aid,
         childLaborEradication: body.child_labor_eradication,
@@ -77,6 +78,7 @@ export class CreateScreeningController implements IController {
         interviewObservations: body.interview_observations,
       },
       informational: {
+        assigneeId: body.assignee_id,
         healthUnity: body.health_unity,
         registration: body.registration,
         nis: body.nis,

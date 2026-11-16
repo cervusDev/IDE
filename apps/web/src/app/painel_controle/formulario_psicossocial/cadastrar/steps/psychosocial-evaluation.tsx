@@ -15,7 +15,7 @@ export const StepPsychosocialEvaluation = () => {
       </div>
 
       {/* BLOCO 1: Saúde e Tratamentos */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>1. Saúde e Tratamentos</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -53,7 +53,7 @@ export const StepPsychosocialEvaluation = () => {
       </details>
 
       {/* BLOCO 2: Gestação, Alimentação e Sono */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>2. Gestação, Alimentação e Sono</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -99,7 +99,7 @@ export const StepPsychosocialEvaluation = () => {
       </details>
 
       {/* BLOCO 3: Desenvolvimento e Hábitos */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>3. Desenvolvimento e Habilidades</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -145,7 +145,7 @@ export const StepPsychosocialEvaluation = () => {
       </details>
 
       {/* BLOCO 4: Escola, Cotidiano e Sociedade */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>4. Escolaridade, Rotina e Contexto Social</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">
@@ -207,7 +207,7 @@ export const StepPsychosocialEvaluation = () => {
       </details>
 
       {/* BLOCO 5: Dinâmica Familiar e Impressões */}
-      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open>
+      <details className="bg-white rounded-2xl border border-zinc-200 shadow-sm group" open={false}>
         <summary className="p-5 sm:p-7 flex justify-between items-center cursor-pointer select-none text-lg sm:text-xl font-bold text-zinc-800 hover:text-zinc-950 transition">
           <span>5. Dinâmica Familiar e Impressões da Entrevista</span>
           <span className="transform group-open:rotate-180 transition-transform duration-200 text-sm font-normal text-zinc-400">

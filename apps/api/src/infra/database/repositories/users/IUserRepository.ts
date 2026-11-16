@@ -1,6 +1,8 @@
 import { ICreateUserRepositoryInputData } from './dtos/create/InputData';
 import { IFindByUserEmailRepositoryInputData } from './dtos/findByEmail/InputData';
 import { IFindByUserEmailRepositoryOutputData } from './dtos/findByEmail/OutputData';
+import { IFindUserByIdInputData } from './dtos/findById/InputData';
+import { IFindUserByIdOutputData } from './dtos/findById/OutputData';
 import { IListUserRepositoryOutputData } from './dtos/list/OutputData';
 
 export interface IUserRepository {
@@ -8,5 +10,6 @@ export interface IUserRepository {
   findByEmail(
     inputData: IFindByUserEmailRepositoryInputData,
   ): Promise<IFindByUserEmailRepositoryOutputData>;
+  findById(inputData: IFindUserByIdInputData): Promise<IFindUserByIdOutputData>
   list(): Promise<IListUserRepositoryOutputData>;
 }

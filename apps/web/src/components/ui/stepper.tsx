@@ -17,13 +17,13 @@ export const Stepper: React.FC<StepperProps> = ({ currentStep, steps }) => {
 
           return (
             <React.Fragment key={index}>
-              <div className="flex flex-col items-center flex-shrink-0 z-10 group">
+              <div className="flex flex-col items-center flex-shrink-0 z-1 group">
                 <div
                   className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-sm sm:text-base font-bold transition-all duration-300 ${
                     isCompleted
                       ? "bg-[#43B02A] text-white shadow-sm"
                       : isCurrent
-                      ? "bg-[#EAB308] text-white ring-4 ring-yellow-100 shadow-md"
+                      ? "bg-[#D72685] text-white ring-4 ring-[#D72685]/30 shadow-md"
                       : "bg-zinc-100 text-zinc-500 border border-zinc-200"
                   }`}
                 >
