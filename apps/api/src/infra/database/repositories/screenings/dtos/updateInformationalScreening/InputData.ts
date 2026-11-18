@@ -1,6 +1,10 @@
-import { ICreateInformationalScreeningInputData } from "../createInformationalScreening/InputData";
+import { IBenefitsInsert, ICreateInformationalScreeningInputData, IFamilyMemberInsert, IInformationalScreeningInsert, IPsychosocialEvaluationInsert } from "../createInformationalScreening/InputData";
 
-export type IUpdateInformationalScreeningInputData = Partial<ICreateInformationalScreeningInputData> & {
+export type IUpdateInformationalScreeningInputData = {
+  informational: Partial<IInformationalScreeningInsert>;
+  familyMembers?: Partial<IFamilyMemberInsert[]>;
+  psychosocialEvaluation?: Partial<IPsychosocialEvaluationInsert>;
+  benefits?: Partial<IBenefitsInsert>;
   registration: string;
   newVersion: number
   informationalId: string;

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export const deleteScreeningControllerQuerySchema = z.object({
+export const deleteScreeningControllerParamsSchema = z.object({
   registration: z.string(),
 });
 
-export type DeleteScreeningControllerQuerySchema = z.infer<
-  typeof deleteScreeningControllerQuerySchema
+export type DeleteScreeningControllerParamsSchema = z.infer<
+  typeof deleteScreeningControllerParamsSchema
 >;

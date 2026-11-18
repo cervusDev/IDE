@@ -14,13 +14,16 @@ export class FindScreeningByIdUseCase implements IUseCase<IInputData, IOutputDat
     const screening = await this.screeningRepository.findById({
       id: inputData.id
     })
-    if (!screening.informational.id) {
+    if (!screening.informational?.id) {
       throw new ConflictError(`Não foi possível encontrar o formulário: ${inputData.id}`)
     }
     const output: IOutputData = {
       benefits: screening.benefits,
       familyMembers: screening.familyMembers,
-      informational: screening.informational,
+      informational: {
+        ...screening.informational,
+        housingStatus: screening.informational.housingStatus!
+      },
       psychosocialEvaluation: screening.psychosocialEvaluation!
     }
     return output;

@@ -1,5 +1,5 @@
 import { IController, IControllerRequest, IControllerResponse } from "@shared/interfaces/IController";
-import { DeleteScreeningControllerQuerySchema } from "./schema";
+import { DeleteScreeningControllerParamsSchema } from "./schema";
 import { DeleteScreeningUseCase } from "@application/useCases/screenings/delete";
 import { IAbstractFactory } from "./IFactory";
 import { EHttpCode } from "@infra/http/enums/HttpCode";
@@ -10,10 +10,10 @@ export class DeleteScreeningController implements IController {
     this.deleteScreeningUseCase = factory.makeDeleteScreeningUsecase();
   }
   public async execute(
-    request: IControllerRequest<unknown, unknown, DeleteScreeningControllerQuerySchema>
+    request: IControllerRequest<unknown, DeleteScreeningControllerParamsSchema>
   ): Promise<IControllerResponse> {
     await this.deleteScreeningUseCase.execute({
-      registration: request.query.registration
+      registration: request.params.registration
     })
     const response: IControllerResponse = {
       body: null,

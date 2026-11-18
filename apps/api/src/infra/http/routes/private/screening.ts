@@ -2,9 +2,9 @@ import { IRoute } from '../IRoute';
 import { makeCreateScreeningController } from '@application/controllers/screenings/create/factory';
 import { createScreeningControllerBody } from '@application/controllers/screenings/create/schemas';
 import { makeDeleteScreeningController } from '@application/controllers/screenings/delete/factory';
-import { deleteScreeningControllerQuerySchema } from '@application/controllers/screenings/delete/schema';
+import { deleteScreeningControllerParamsSchema } from '@application/controllers/screenings/delete/schema';
 import { makeFindScreeningByIdController } from '@application/controllers/screenings/findById/factory';
-import { findScreeningByIdControllerQuerySchema, findScreeningByIdControllerResponseSchema } from '@application/controllers/screenings/findById/schemas';
+import { findScreeningByIdControllerParamsSchema, findScreeningByIdControllerResponseSchema } from '@application/controllers/screenings/findById/schemas';
 import { makeListScreeningController } from '@application/controllers/screenings/list/factory';
 import { listScreeningControllerQuerySchema, listScreeningControllerResponseSchema } from '@application/controllers/screenings/list/schemas';
 import { makeListScreeningByRegistrationController } from '@application/controllers/screenings/listByRegistration/factory';
@@ -48,7 +48,7 @@ export const privateScreeningRoutes: IRoute[] = [
   },
   {
     method: 'GET',
-    path: '/screenings-versions/:registration',
+    path: '/screenings-versions:registration',
     controller: makeListScreeningByRegistrationController(),
     middlewares: [makeAuthenticationMiddleware()],
     schemas: {
@@ -64,7 +64,7 @@ export const privateScreeningRoutes: IRoute[] = [
     controller: makeFindScreeningByIdController(),
     middlewares: [makeAuthenticationMiddleware()],
     schemas: {
-      query: findScreeningByIdControllerQuerySchema,
+      params: findScreeningByIdControllerParamsSchema,
       response: {
         [EHttpCode.OK]: findScreeningByIdControllerResponseSchema
       }
@@ -76,7 +76,7 @@ export const privateScreeningRoutes: IRoute[] = [
     controller: makeDeleteScreeningController(),
     middlewares: [makeAuthenticationMiddleware()],
     schemas: {
-      query: deleteScreeningControllerQuerySchema,
+      params: deleteScreeningControllerParamsSchema,
     }
   }
 ];

@@ -21,6 +21,7 @@ export class CreateScreeningController implements IController {
       registration: params.registration,
       coAuthorId: body.co_author_id,
       benefits: {
+        stateIncomeAid: body.state_income_aid,
         birthAid: body.birth_aid,
         childLaborEradication: body.child_labor_eradication,
         continuousCashBenefit: body.continuous_cash_benefit,

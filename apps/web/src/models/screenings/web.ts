@@ -2,7 +2,7 @@ import { Gender, HousingStatus } from ".";
 
 export interface IFamilyMemberWebModel {
   fullName: string;
-  age: string;
+  age: number;
   relationship: string;
   educationalAttainment: string;
   contact: string | null;
@@ -18,13 +18,13 @@ export interface IInformationalScreeningWebModel {
   studentName: string;
   studentBirthDate: string;
   studentColor: string;
-  studentAge: string;
+  studentAge: number;
   studentRa: string;
   studentEducationalAttainment: string;
   studentSchoolName: string;
   studentSchoolPeriod: string;
   studentGender: Gender;
-  studentGenderOther?: string;
+  studentGenderOther: string | null;
   
   // Endereço e Contato
   streetAddress: string;

@@ -1,5 +1,5 @@
 import { IController, IControllerRequest, IControllerResponse } from "@shared/interfaces/IController";
-import { FindScreeningByIdControllerQuerySchema, FindScreeningByIdControllerResponseSchema } from "./schemas";
+import { FindScreeningByIdControllerParamsSchema, FindScreeningByIdControllerResponseSchema } from "./schemas";
 import { EHttpCode } from "@infra/http/enums/HttpCode";
 import { FindScreeningByIdUseCase } from "@application/useCases/screenings/findById";
 import { IAbstractFactory } from "./IFactory";
@@ -10,10 +10,10 @@ export class FindScreeningByIdController implements IController {
     this.findScreeningByIdUseCase = factory.makeFindScreeningByIdUseCase();
   }
   public async execute(
-    request: IControllerRequest<unknown, unknown, FindScreeningByIdControllerQuerySchema>
+    request: IControllerRequest<unknown, FindScreeningByIdControllerParamsSchema>
   ): Promise<IControllerResponse<FindScreeningByIdControllerResponseSchema>> {
     const useCase = await this.findScreeningByIdUseCase.execute({
-      id: request.query.id
+      id: request.params.id
     })
     const response: IControllerResponse<FindScreeningByIdControllerResponseSchema> = {
       body: {

@@ -209,14 +209,15 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
       const result = mainResultQuery[0];
 
       const output: IFindByIdOutputData = {
-        informational: result.informational,
-        benefits: result.benefits!,
+        informational: result?.informational,
+        benefits: result?.benefits!,
         familyMembers,
-        psychosocialEvaluation: result.psychosocialEvaluation! 
+        psychosocialEvaluation: result?.psychosocialEvaluation!
       };
 
       return output;
     } catch (err) {
+      console.log('err', err)
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
@@ -309,7 +310,7 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
         await tx.update(informationalScreeningTable)
           .set({ isLatest: false })
           .where(eq(informationalScreeningTable.id, inputData.informationalId));
-        // 1. Insere a nova versão herdando o registration e incrementando o version
+        // 1. Insere a nova versão herdando o r egistration e incrementando o version
         const [newScreening] = await tx
           .insert(informationalScreeningTable)
           .values({
@@ -317,17 +318,19 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
             registration: inputData.registration, // Mantém o elo do cadastro
             version: inputData.newVersion,        // Incrementa a versão (ex: 1 virá 2)
             isLatest: inputData.isLatest,         // true
-            coAuthorId: inputData.coAuthorId,
-            assigneeId: inputData.assigneeId,
+            coAuthorId: this.sanitizeUuid(inputData.coAuthorId),
           })
           .returning({ id: informationalScreeningTable.id });
 
-        // 4. Insere os novos dados de membros da família vinculados à nova versão
         if (inputData.familyMembers && inputData.familyMembers.length > 0) {
           await tx.insert(familyMembersTable).values(
             inputData.familyMembers.map((member) => ({
-              ...member,
               informationalScreeningId: newScreening.id,
+              fullName: member?.fullName!, // Garante para o TS que não é undefined
+              age: member?.age!,
+              relationship: member?.relationship!,
+              // Espalha o restante das propriedades opcionais se houverem
+              ...member,
             }))
           );
         }
@@ -362,4 +365,10 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
+  private sanitizeUuid(value?: string | null): string | null {
+    if (!value || value === 'undefined' || value === 'null' || value.trim() === '') {
+      return null;
+    }
+    return value;
+  };
 }

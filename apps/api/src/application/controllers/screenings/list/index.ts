@@ -37,7 +37,7 @@ export class ListScreeningController implements IController {
           legal_guardian_name: item.legalGuardianName,
           registration: item.registration,
           student_age: item.studentAge,
-          studentName: item.studentName,
+          student_name: item.studentName,
         })),
         pagination: {
           limit: useCase.meta.limit,

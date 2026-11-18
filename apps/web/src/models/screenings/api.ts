@@ -2,7 +2,7 @@ import { Gender, HousingStatus } from ".";
 
 export interface IFamilyMemberApiModel {
   full_name: string;
-  age: string;
+  age: number;
   relationship: string;
   educational_attainment: string | null;
   contact: string | null;
@@ -18,13 +18,13 @@ export interface IInformationalScreeningApiModel {
   student_name: string;
   student_birth_date: string;
   student_color: string;
-  student_age: string;
+  student_age: number;
   student_ra: string;
   student_educational_attainment: string;
   student_school_name: string;
   student_school_period: string;
   student_gender: Gender;
-  student_gender_other?: string;
+  student_gender_other: string | null;
   
   // Endereço e Contato
   street_address: string;

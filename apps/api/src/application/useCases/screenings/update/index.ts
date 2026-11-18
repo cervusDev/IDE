@@ -31,7 +31,9 @@ export class UpdateScreeningUseCase implements IUseCase<InputData, void>{
       benefits: inputData.benefits,
       registration: inputData.registration,
       informationalId: String(currentScreening?.id),
-      informational:inputData.informational,
+      informational: {
+        ...inputData.informational,
+      },
       familyMembers: inputData.familyMembers,
       newVersion: Number(currentScreening?.version) + 1,
       assigneeId: String(currentScreening?.assignee?.id),

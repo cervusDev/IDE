@@ -49,11 +49,11 @@ export interface IInformationalScreening {
   fatherContact?: string | null;
   
   // Informações Socioeconômicas
-  grossHouseholdIncome: number; // O Drizzle costuma retornar decimais como string por segurança de precisão
-  parentsMaritalStatus: string;
-  legalGuardianName: string;
-  religion: string;
-  housingStatus: HousingStatus;
+  grossHouseholdIncome?: string | null; // O Drizzle costuma retornar decimais como string por segurança de precisão
+  parentsMaritalStatus?: string | null;
+  legalGuardianName?: string | null;
+  religion?: string | null;
+  housingStatus: 'ALUGADO' | 'PRÓPRIO' | 'CEDIDO';
 }
 
 export interface IPsychosocialEvaluation {
@@ -84,39 +84,39 @@ export interface IPsychosocialEvaluation {
 
 export interface IBenefit {
   // Transferência de Renda e Auxílios
-  familyGrant: boolean;
-  continuousCashBenefit: boolean;
-  gasAid: boolean;
-  birthAid: boolean;
-  emergencyAid: boolean;
-  stateIncomeAid: boolean;
+  familyGrant?: boolean;
+  continuousCashBenefit?: boolean;
+  gasAid?: boolean;
+  birthAid?: boolean;
+  emergencyAid?: boolean;
+  stateIncomeAid?: boolean;
   
   // Tarifas Sociais
-  socialEnergyTariff: boolean;
-  socialWaterTariff: boolean;
+  socialEnergyTariff?: boolean;
+  socialWaterTariff?: boolean;
   
   // Educação e Infância
-  peDeMeia: boolean;
-  milkProgram: boolean;
-  menstrualDignityProgram: boolean;
-  youthId: boolean;
+  peDeMeia?: boolean;
+  milkProgram?: boolean;
+  menstrualDignityProgram?: boolean;
+  youthId?: boolean;
   
   // Habitação
-  socialRent: boolean;
-  socialHousing: boolean;
-  greenGrant: boolean;
+  socialRent?: boolean;
+  socialHousing?: boolean;
+  greenGrant?: boolean;
   
   // Acompanhamento Socioassistencial
-  participatesInPaif: boolean;
-  participatesInPaefi: boolean;
-  childLaborEradication: boolean;
+  participatesInPaif?: boolean;
+  participatesInPaefi?: boolean;
+  childLaborEradication?: boolean;
   
   // Isenções, Documentos e Transporte
-  feeExemption: boolean;
-  elderlyCard: boolean;
-  freeTransit: boolean;
-  inclusionAid: boolean;
+  feeExemption?: boolean;
+  elderlyCard?: boolean;
+  freeTransit?: boolean;
+  inclusionAid?: boolean;
   
-  others: boolean;
+  others?: boolean;
   othersDescription?: string | null;
 }

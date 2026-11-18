@@ -19,7 +19,7 @@ export type ListScreeningControllerQuerySchema = z.infer<
 export const listScreeningControllerResponseSchema = z.object({
   list: z.array(
     z.object({
-      studentName: z.string(),
+      student_name: z.string(),
       student_age: z.number(),
       health_unity: z.string(),
       registration: z.string(),

@@ -1,12 +1,12 @@
 import { genderEnumSchemaValues, housingStatusSchemaValues } from '@shared/models/screenings';
 import { z } from 'zod';
 
-export const findScreeningByIdControllerQuerySchema = z.object({
+export const findScreeningByIdControllerParamsSchema = z.object({
   id: z.string(),
 });
 
-export type FindScreeningByIdControllerQuerySchema = z.infer<
-  typeof findScreeningByIdControllerQuerySchema
+export type FindScreeningByIdControllerParamsSchema = z.infer<
+  typeof findScreeningByIdControllerParamsSchema
 >;
 
 export const findScreeningByIdControllerResponseSchema = z.object({
@@ -51,11 +51,10 @@ export const findScreeningByIdControllerResponseSchema = z.object({
   
     // Contexto Socioeconômico e Familiar
     gross_household_income: z.coerce
-      .number({ message: 'A renda bruta familiar é obrigatória' })
-      .positive('A renda bruta familiar deve ser um valor positivo'),
-    parents_marital_status: z.string().min(1, 'O estado civil dos pais é obrigatório'),
-    legal_guardian_name: z.string().min(1, 'O nome do responsável legal é obrigatório'),
-    religion: z.string().min(1, 'O campo religião é obrigatório'),
+      .string({ message: 'A renda bruta familiar é obrigatória' }).optional().nullable(),
+    parents_marital_status: z.string().optional().nullable(),
+    legal_guardian_name: z.string().optional().nullable(),
+    religion: z.string().optional().nullable(),
     housing_status: z.enum(housingStatusSchemaValues, {
       message: 'Selecione um tipo de moradia válido',
     }),
@@ -63,35 +62,35 @@ export const findScreeningByIdControllerResponseSchema = z.object({
     // ==========================================
     // ETAPA 2: Benefícios e Auxílios
     // ==========================================
-    family_grant: z.boolean().default(false),
-    continuous_cash_benefit: z.boolean().default(false),
-    gas_aid: z.boolean().default(false),
-    birth_aid: z.boolean().default(false),
-    emergency_aid: z.boolean().default(false),
-    state_income_aid: z.boolean().default(false),
+    family_grant: z.boolean().default(false).optional().nullable(),
+    continuous_cash_benefit: z.boolean().default(false).optional().nullable(),
+    gas_aid: z.boolean().default(false).optional().nullable(),
+    birth_aid: z.boolean().default(false).optional().nullable(),
+    emergency_aid: z.boolean().default(false).optional().nullable(),
+    state_income_aid: z.boolean().default(false).optional().nullable(),
   
-    social_energy_tariff: z.boolean().default(false),
-    social_water_tariff: z.boolean().default(false),
+    social_energy_tariff: z.boolean().default(false).optional().nullable(),
+    social_water_tariff: z.boolean().default(false).optional().nullable(),
   
-    pe_de_meia: z.boolean().default(false),
-    milk_program: z.boolean().default(false),
-    menstrual_dignity_program: z.boolean().default(false),
-    youth_id: z.boolean().default(false),
+    pe_de_meia: z.boolean().default(false).optional().nullable(),
+    milk_program: z.boolean().default(false).optional().nullable(),
+    menstrual_dignity_program: z.boolean().default(false).optional().nullable(),
+    youth_id: z.boolean().default(false).optional().nullable(),
   
-    social_rent: z.boolean().default(false),
-    social_housing: z.boolean().default(false),
-    green_grant: z.boolean().default(false),
+    social_rent: z.boolean().default(false).optional().nullable(),
+    social_housing: z.boolean().default(false).optional().nullable(),
+    green_grant: z.boolean().default(false).optional().nullable(),
   
-    participates_in_paif: z.boolean().default(false),
-    participates_in_paefi: z.boolean().default(false),
-    child_labor_eradication: z.boolean().default(false),
+    participates_in_paif: z.boolean().default(false).optional().nullable(),
+    participates_in_paefi: z.boolean().default(false).optional().nullable(),
+    child_labor_eradication: z.boolean().default(false).optional().nullable(),
   
-    fee_exemption: z.boolean().default(false),
-    elderly_card: z.boolean().default(false),
-    free_transit: z.boolean().default(false),
-    inclusion_aid: z.boolean().default(false),
+    fee_exemption: z.boolean().default(false).optional().nullable(),
+    elderly_card: z.boolean().default(false).optional().nullable(),
+    free_transit: z.boolean().default(false).optional().nullable(),
+    inclusion_aid: z.boolean().default(false).optional().nullable(),
   
-    others: z.boolean().default(false),
+    others: z.boolean().default(false).optional().nullable(),
     others_description: z.string().optional().or(z.literal('')).nullable(),
   
     // ==========================================
