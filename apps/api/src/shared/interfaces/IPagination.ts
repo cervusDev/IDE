@@ -1,4 +1,10 @@
-// src/shared/helpers/pagination.helper.ts
+import { z } from 'zod';
+
+export const PaginationSchemaValues = z.object({
+  total: z.number(),
+  page: z.number(),
+  limit: z.number(),
+})
 
 export interface IPaginationParams {
   page?: number;
@@ -26,13 +32,19 @@ export function calculatePagination(params: IPaginationParams) {
 }
 
 export function createPaginatedResponse<T>(
-  items: T[],
-  total: number,
-  page: number,
-  limit: number
+  {
+    items,
+    limit,
+    page,
+    total
+  }: {
+    items: T[],
+    total: number,
+    page: number,
+    limit: number
+  }
 ): IPaginatedResult<T> {
   const totalPages = Math.ceil(total / limit);
-  
   return {
     items,
     meta: {

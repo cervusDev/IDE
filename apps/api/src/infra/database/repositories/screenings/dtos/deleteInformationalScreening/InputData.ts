@@ -1,3 +1,3 @@
 export interface IDeleteInformationalScreeningInputData {
-  id: string;
+  registration: string;
 }

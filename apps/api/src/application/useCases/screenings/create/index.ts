@@ -28,7 +28,10 @@ export class CreateScreeningUseCase implements IUseCase<IInputData, void> {
     await this.screeningRepository.createInformationalScreening({
       benefits: inputData.benefits,
       familyMembers: inputData.familyMembers,
-      informational: inputData.informational,
+      informational: {
+        ...inputData.informational,
+        grossHouseholdIncome: String(inputData.informational.grossHouseholdIncome)
+      },
       psychosocialEvaluation: inputData.psychosocialEvaluation
     });
   }

@@ -10,6 +10,7 @@ import { DataFilter } from "@/components/layout/filter";
 import { filterFields } from "./list/filter-fields";
 import { Pagination, PaginationMeta } from "@/components/ui/pagination";
 import { FormListItem, FormFilters as FormFiltersType } from "./list/types";
+import { Button } from "@/components/ui/button";
 
 const ALL_MOCK_FORMS: FormListItem[] = [
   { id: "1", registration: "MAT-2026-001", healthUnity: "UBS Central", nis: "123.45678.90-1", studentName: "João Pedro Silva", studentAge: "10", studentRa: "98765432-X", legalGuardianName: "Maria da Silva", createdAt: "10/11/2026" },
@@ -139,14 +140,18 @@ const FormListView = () => {
             Gerencie e filtre os formulários cadastrados no sistema socioassistencial.
           </p>
         </div>
-
-        <Link
-          href="/painel_controle/formulario_psicossocial/cadastrar"
-          className="px-6 py-3 text-base font-bold text-white bg-[#D72685] hover:opacity-80 rounded-xl transition-opacity shadow-md flex items-center gap-2.5 active:scale-[0.98]"
-        >
-          <Plus className="w-5 h-5 stroke-[2.5]" />
-          <span>Novo Cadastro</span>
-        </Link>
+        <div className="flex gap-4">
+          <Link
+            href="/painel_controle/formulario_psicossocial/cadastrar"
+            className="px-6 py-3 text-base font-bold text-white bg-[#D72685] hover:opacity-80 rounded-xl transition-opacity shadow-md flex items-center gap-2.5 active:scale-[0.98]"
+          >
+            <Plus className="w-5 h-5 stroke-[2.5]" />
+            <span>Novo Cadastro</span>
+          </Link>
+          <button className="px-6 py-3 text-base font-bold text-white bg-[#D72685] hover:opacity-80 rounded-xl transition-opacity shadow-md flex items-center gap-2.5 active:scale-[0.98]">
+            Atualizar Formulários
+          </button>
+        </div>
       </div>
 
       <DataFilter

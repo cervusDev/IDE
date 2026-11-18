@@ -22,6 +22,10 @@ export const housingStatusEnum = pgEnum('housing_status', [
 
 export const genderEnum = pgEnum('gender_enum', ['M', 'F', 'O']);
 
+export const housingStatusSchemaValues = ['ALUGADO', 'PRÓPRIO', 'CEDIDO'] as const;
+export const genderEnumSchemaValues = ['M', 'F', 'O'] as const;
+
+
 export const informationalScreeningTable = pgTable('informational_screening', {
   id: uuid('id').defaultRandom().primaryKey(),
 

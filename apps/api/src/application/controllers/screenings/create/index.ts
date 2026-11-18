@@ -23,6 +23,7 @@ export class CreateScreeningController implements IController {
     await this.createScreeningUseCase.execute({
       assigneeId: body.assignee_id,
       benefits: {
+        stateIncomeAid: body.state_income_aid,
         birthAid: body.birth_aid,
         childLaborEradication: body.child_labor_eradication,
         continuousCashBenefit: body.continuous_cash_benefit,
@@ -78,7 +79,6 @@ export class CreateScreeningController implements IController {
         interviewObservations: body.interview_observations,
       },
       informational: {
-        assigneeId: body.assignee_id,
         healthUnity: body.health_unity,
         registration: body.registration,
         nis: body.nis,
@@ -104,7 +104,7 @@ export class CreateScreeningController implements IController {
         fatherEducationalAttainment: body.father_educational_attainment || null,
         fatherOccupation: body.father_occupation || null,
         fatherContact: body.father_contact || null,
-        grossHouseholdIncome: body.gross_household_income.toString(),
+        grossHouseholdIncome: body.gross_household_income,
         parentsMaritalStatus: body.parents_marital_status,
         legalGuardianName: body.legal_guardian_name,
         religion: body.religion,

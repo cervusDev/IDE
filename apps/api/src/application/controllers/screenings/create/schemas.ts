@@ -1,7 +1,5 @@
+import { genderEnumSchemaValues, housingStatusSchemaValues } from '@shared/models/screenings';
 import { z } from 'zod';
-
-const housingStatusValues = ['ALUGADO', 'PRÓPRIO', 'CEDIDO'] as const;
-export const genderEnum = ['M', 'F', 'O'] as const;
 
 export const createScreeningControllerBody = z.object({
   // ==========================================
@@ -21,7 +19,7 @@ export const createScreeningControllerBody = z.object({
   student_educational_attainment: z.string().min(1, 'A escolaridade do aluno é obrigatória'),
   student_school_name: z.string().min(1, 'O nome da escola do aluno é obrigatório'),
   student_school_period: z.string().min(1, 'O período escolar do aluno é obrigatório'),
-  student_gender: z.enum(genderEnum, {
+  student_gender: z.enum(genderEnumSchemaValues, {
     message: 'Selecione um tipo de gênero válido',
   }),
   student_gender_other: z.string().optional(),
@@ -51,7 +49,7 @@ export const createScreeningControllerBody = z.object({
   parents_marital_status: z.string().min(1, 'O estado civil dos pais é obrigatório'),
   legal_guardian_name: z.string().min(1, 'O nome do responsável legal é obrigatório'),
   religion: z.string().min(1, 'O campo religião é obrigatório'),
-  housing_status: z.enum(housingStatusValues, {
+  housing_status: z.enum(housingStatusSchemaValues, {
     message: 'Selecione um tipo de moradia válido',
   }),
 

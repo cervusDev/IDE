@@ -2,8 +2,18 @@ import Link from "next/link";
 
 export default function HomePage() {
   const stats = [
-    { label: "Assistidos Ativos", value: "128", change: "Crianças e Jovens" },
-    { label: "Famílias Cadastradas", value: "94", change: "Núcleos Familiares" },
+    {
+      label: "Famílias Cadastradas",
+      value: "94",
+      change: "Núcleos Familiares",
+      disabled: false,
+    },
+    {
+      label: "Indicadores Alcançados",
+      value: "-",
+      change: "Módulo indisponível",
+      disabled: true,
+    }
   ];
 
   const quickActions = [
@@ -22,8 +32,8 @@ export default function HomePage() {
       disabled: true, // Desativado (Novo módulo analítico)
     },
     {
-      title: "Programas Sociais",
-      description: "Visualize os benefícios vinculados aos cadastros.",
+      title: "Gestão de Projetos",
+      description: "Acompanhe o andamento das oficinas, atividades socioeducativas e o engajamento dos assistidos.",
       href: "#",
       badge: "Em breve",
       disabled: true, // Desativado
@@ -31,17 +41,17 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="space-y-8 text-zinc-900">
+    <div className="space-y-10 text-zinc-900">
       {/* Mensagem de Boas-Vindas */}
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8 shadow-sm">
-        <div className="flex flex-col gap-2">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#D72685]">
+      <div className="rounded-2xl border border-zinc-200 bg-white p-8 sm:p-10 shadow-sm">
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-bold uppercase tracking-widest text-[#D72685]">
             Painel do Colaborador
           </span>
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-zinc-900">
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900">
             Bem-vindo à Plataforma IDE
           </h1>
-          <p className="max-w-2xl text-sm sm:text-base text-zinc-600 mt-1">
+          <p className="max-w-3xl text-base sm:text-lg text-zinc-700 mt-1 leading-relaxed">
             <strong className="text-zinc-900 font-semibold">Associação Ide de Assistência à Infância e à Juventude</strong>.
             Acesse as ferramentas administrativas para gestão de dados socioeconômicos, acompanhamento das famílias e registro de assistidos.
           </p>
@@ -49,46 +59,78 @@ export default function HomePage() {
       </div>
 
       {/* Cards com Métricas / Resumo */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"
-          >
-            <p className="text-xs font-medium text-zinc-500">{stat.label}</p>
-            <p className="text-3xl font-bold text-zinc-900 mt-2">{stat.value}</p>
-            <p className="text-xs font-medium text-[#43B02A] mt-1">{stat.change}</p>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {stats.map((stat) => {
+          if (stat.disabled) {
+            return (
+              <div
+                key={stat.label}
+                className="rounded-2xl border border-zinc-200 bg-zinc-50/80 p-7 opacity-75 cursor-not-allowed select-none"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm sm:text-base font-medium text-zinc-500">
+                    {stat.label}
+                  </p>
+                  <span className="text-xs font-semibold text-zinc-600 bg-zinc-200/80 px-2.5 py-0.5 rounded-full border border-zinc-300/60">
+                    Em breve
+                  </span>
+                </div>
+                <p className="text-4xl sm:text-5xl font-extrabold text-zinc-500 mt-2">
+                  {stat.value}
+                </p>
+                <p className="text-sm font-semibold text-zinc-500 mt-2">
+                  {stat.change}
+                </p>
+              </div>
+            );
+          }
+
+          return (
+            <div
+              key={stat.label}
+              className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm"
+            >
+              <p className="text-sm sm:text-base font-medium text-zinc-600">
+                {stat.label}
+              </p>
+              <p className="text-4xl sm:text-5xl font-extrabold text-zinc-900 mt-2">
+                {stat.value}
+              </p>
+              <p className="text-sm font-semibold text-[#43B02A] mt-2">
+                {stat.change}
+              </p>
+            </div>
+          );
+        })}
       </div>
 
       {/* Acesso Rápido */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-bold text-zinc-800">
+      <div className="space-y-5">
+        <h2 className="text-xl sm:text-2xl font-bold text-zinc-900">
           Acesso Rápido
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {quickActions.map((action) => {
             if (action.disabled) {
               return (
                 <div
                   key={action.title}
-                  className="relative flex flex-col justify-between rounded-xl border border-zinc-200 bg-zinc-50/60 p-6 opacity-60 cursor-not-allowed select-none"
+                  className="relative flex flex-col justify-between rounded-2xl border border-zinc-200 bg-zinc-50/80 p-8 opacity-75 cursor-not-allowed select-none"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-medium text-zinc-500 bg-zinc-200/60 px-2.5 py-1 rounded-full border border-zinc-300/50">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-zinc-600 bg-zinc-200/80 px-3 py-1 rounded-full border border-zinc-300/60">
                         {action.badge}
                       </span>
                     </div>
-                    <h3 className="text-base font-semibold text-zinc-500">
+                    <h3 className="text-lg sm:text-xl font-bold text-zinc-600">
                       {action.title}
                     </h3>
-                    <p className="text-xs text-zinc-400 mt-2 line-clamp-2">
+                    <p className="text-sm sm:text-base text-zinc-500 mt-2.5 leading-relaxed">
                       {action.description}
                     </p>
                   </div>
-                  <div className="mt-6 flex items-center text-xs font-medium text-zinc-400">
+                  <div className="mt-8 flex items-center text-sm font-semibold text-zinc-500">
                     Módulo indisponível
                   </div>
                 </div>
@@ -99,40 +141,28 @@ export default function HomePage() {
               <Link
                 key={action.title}
                 href={action.href}
-                className="group relative flex flex-col justify-between rounded-xl border border-zinc-200 bg-white p-6 hover:border-[#D72685] hover:shadow-md transition-all duration-200"
+                className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-8 hover:border-[#D72685] hover:shadow-md transition-all duration-200"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-[#43B02A] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm font-bold text-[#43B02A] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                       {action.badge}
                     </span>
                   </div>
-                  <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#D72685] transition-colors">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-900 group-hover:text-[#D72685] transition-colors">
                     {action.title}
                   </h3>
-                  <p className="text-xs text-zinc-600 mt-2 line-clamp-2">
+                  <p className="text-sm sm:text-base text-zinc-700 mt-2.5 leading-relaxed">
                     {action.description}
                   </p>
                 </div>
-                <div className="mt-6 flex items-center text-xs font-bold text-[#D72685] group-hover:opacity-90">
-                  Acessar módulo &rarr;
+                <div className="mt-8 flex items-center text-sm sm:text-base font-bold text-[#D72685] group-hover:opacity-90">
+                  Acessar módulo →
                 </div>
               </Link>
             );
           })}
         </div>
-      </div>
-
-      {/* Comunicados Internos / Informações Institucionais */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-        <h3 className="text-sm font-bold text-zinc-800 mb-2">
-          Orientações do Sistema
-        </h3>
-        <ul className="list-disc list-inside text-xs text-zinc-600 space-y-1.5 leading-relaxed">
-          <li>Mantenha as fichas cadastrais sempre atualizadas para relatórios socioassistenciais.</li>
-          <li>Em caso de dúvida no preenchimento do NIS ou programas sociais, consulte o manual interno no menu de apoio.</li>
-          <li>Todos os dados dos assistidos estão protegidos de acordo com as normas de privacidade e LGPD.</li>
-        </ul>
       </div>
     </div>
   );

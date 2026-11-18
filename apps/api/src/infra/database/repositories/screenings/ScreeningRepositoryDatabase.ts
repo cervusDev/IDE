@@ -1,9 +1,9 @@
-import { and, count, eq, SQL } from 'drizzle-orm';
+import { and, count, eq, ilike, SQL } from 'drizzle-orm';
 import DrizzleORMError from "@infra/database/errors/DrizzleORMError";
 import { ICreateInformationalScreeningInputData } from "./dtos/createInformationalScreening/InputData";
 import { IDeleteInformationalScreeningInputData } from "./dtos/deleteInformationalScreening/InputData";
-import { IFindInformationalScreeningInputData } from "./dtos/findInformationalScreening/InputData";
-import { IFindInformationalScreeningOutputData } from "./dtos/findInformationalScreening/Output";
+import { IFindByIdInputData } from "./dtos/findById/InputData";
+import { IFindByIdOutputData } from "./dtos/findById/Output";
 import { IListInformationScreeningInputData } from "./dtos/listInformationalScreening/InputData";
 import { IListInformationalScreeningOutput } from "./dtos/listInformationalScreening/OutputData";
 import { IUpdateInformationalScreeningInputData } from "./dtos/updateInformationalScreening/InputData";
@@ -15,12 +15,31 @@ import { ICountInformationalScreeningInputData } from './dtos/countInformational
 import { ICountInformationalScreeningOutputData } from './dtos/countInformationalScreening/OutputData';
 import { IFindScreenVersionByRegistrationInputData } from './dtos/findScreenVersionByRegistration/InputData';
 import { IFindScreenVersionByRegistrationOutputData } from './dtos/findScreenVersionByRegistration/OutputData';
-import { IDepreciateInformationalScreeningVersionInputData } from './dtos/depreciateInformationalScreeningVersion/InputData';
 import { IFindInformationalScreeningByRegistrationInputData } from './dtos/findInformationalScreeningByRegistration/InputData';
 import { IFindInformationalScreeningByRegistrationOutputData } from './dtos/findInformationalScreeningByRegistration/OutputData';
+import { IListByRegistrationInputData } from './dtos/listByRegistration/InputData';
+import { IListByRegistrationOutputData } from './dtos/listByRegistration/OutputData';
 
 export class ScreeningRepositoryDatabase implements IScreeningRepository {
-public async findInformationalScreeningByRegistration(
+  public async listByRegistration(inputData: IListByRegistrationInputData): Promise<IListByRegistrationOutputData> {
+    try {
+      const database = drizzleDatabase.getInstance();
+      const screenings = await database.select()
+        .from(informationalScreeningTable)
+        .where(eq(informationalScreeningTable.registration, inputData.registration))
+      const output: IListByRegistrationOutputData = {
+        list: screenings.map(item => ({
+          id: item.id,
+          version: item.version,
+          isLatest: item.isLatest
+        }))
+      }
+      return output;
+    } catch (err) {
+      throw new DrizzleORMError(JSON.stringify(err));
+    }
+  }
+  public async findInformationalScreeningByRegistration(
     inputData: IFindInformationalScreeningByRegistrationInputData
   ): Promise<IFindInformationalScreeningByRegistrationOutputData> {
     try {
@@ -45,17 +64,7 @@ public async findInformationalScreeningByRegistration(
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
-  public async depreciateInformationalScreening(inputData: IDepreciateInformationalScreeningVersionInputData): Promise<void> {
-    try {
-      const database = drizzleDatabase.getInstance();
-      await database.update(informationalScreeningTable)
-        .set({ isLatest: false })
-        .where(eq(informationalScreeningTable.id, inputData.id));
-    } catch (err) {
-      throw new DrizzleORMError(JSON.stringify(err));
-    }
-  }
-public async findScreenVersionByRegistration(
+  public async findScreenVersionByRegistration(
     inputData: IFindScreenVersionByRegistrationInputData
   ): Promise<IFindScreenVersionByRegistrationOutputData | null> {
     try {
@@ -96,9 +105,30 @@ public async findScreenVersionByRegistration(
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
-  public async countInformationalScreening(_: ICountInformationalScreeningInputData): Promise<ICountInformationalScreeningOutputData> {
+  public async countInformationalScreening(inputData: ICountInformationalScreeningInputData): Promise<ICountInformationalScreeningOutputData> {
     try {
       const whereConditions: SQL[] = [];
+      if (inputData.filters?.healthUnity) {
+        whereConditions.push(ilike(informationalScreeningTable.healthUnity, `%${inputData.filters.healthUnity}%`));
+      }
+      if (inputData.filters?.nis) {
+        whereConditions.push(ilike(informationalScreeningTable.nis, `%${inputData.filters.nis}%`));
+      }
+      if (inputData.filters?.registration) {
+        whereConditions.push(ilike(informationalScreeningTable.registration, `%${inputData.filters.registration}%`));
+      }
+      if (inputData.filters?.studentName) {
+        whereConditions.push(ilike(informationalScreeningTable.studentName, `%${inputData.filters.studentName}%`));
+      }
+
+      // CORREÇÃO CRUCIAL: Verifica se é diferente de undefined, não é null e NÃO É NaN
+      if (inputData.filters?.studentAge !== undefined && inputData.filters?.studentAge !== null && !isNaN(Number(inputData.filters.studentAge))) {
+        whereConditions.push(eq(informationalScreeningTable.studentAge, Number(inputData.filters.studentAge)));
+      }
+
+      if (inputData.filters?.ra) {
+        whereConditions.push(ilike(informationalScreeningTable.studentRa, `%${inputData.filters.ra}%`));
+      }
       const database = drizzleDatabase.getInstance();
       const query = database
         .select({ count: count() })
@@ -113,6 +143,7 @@ public async findScreenVersionByRegistration(
       }
       return output;
     } catch (err) {
+      console.log('count', err)
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
@@ -152,23 +183,67 @@ public async findScreenVersionByRegistration(
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
-  public async findInformationalScreening(inputData: IFindInformationalScreeningInputData): Promise<IFindInformationalScreeningOutputData> {
+  public async findById(inputData: IFindByIdInputData): Promise<IFindByIdOutputData> {
     try {
       const database = drizzleDatabase.getInstance();
-      const [result] = await database
-        .select()
-        .from(informationalScreeningTable)
-        .where(eq(informationalScreeningTable.id, inputData.id));
-      return result as IFindInformationalScreeningOutputData;
+      // 1. Busca rápida apenas da triagem principal e relações 1:1 / Joins simples de usuários
+      const [mainResultQuery, familyMembers] = await Promise.all([
+        database
+          .select({
+            informational: informationalScreeningTable,
+            psychosocialEvaluation: psychosocialEvaluationsTable,
+            benefits: benefitsTable,
+            assignee: usersTable,
+          })
+          .from(informationalScreeningTable)
+          .leftJoin(psychosocialEvaluationsTable, eq(psychosocialEvaluationsTable.informationalScreeningId, informationalScreeningTable.id))
+          .leftJoin(benefitsTable, eq(benefitsTable.screeningId, informationalScreeningTable.id))
+          .leftJoin(usersTable, eq(informationalScreeningTable.assigneeId, usersTable.id))
+          .where(eq(informationalScreeningTable.id, inputData.id)),
+
+        database
+          .select()
+          .from(familyMembersTable)
+          .where(eq(familyMembersTable.informationalScreeningId, inputData.id))
+      ]);
+      const result = mainResultQuery[0];
+
+      const output: IFindByIdOutputData = {
+        informational: result.informational,
+        benefits: result.benefits!,
+        familyMembers,
+        psychosocialEvaluation: result.psychosocialEvaluation! 
+      };
+
+      return output;
     } catch (err) {
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
-
   public async listInformationalScreening(inputData: IListInformationScreeningInputData): Promise<IListInformationalScreeningOutput> {
     try {
       const whereConditions: SQL[] = [];
-      // INSERIR OS IFS AQUI;
+      if (inputData.filters?.healthUnity) {
+        whereConditions.push(ilike(informationalScreeningTable.healthUnity, `%${inputData.filters.healthUnity}%`));
+      }
+      if (inputData.filters?.nis) {
+        whereConditions.push(ilike(informationalScreeningTable.nis, `%${inputData.filters.nis}%`));
+      }
+      if (inputData.filters?.registration) {
+        whereConditions.push(ilike(informationalScreeningTable.registration, `%${inputData.filters.registration}%`));
+      }
+      if (inputData.filters?.studentName) {
+        whereConditions.push(ilike(informationalScreeningTable.studentName, `%${inputData.filters.studentName}%`));
+      }
+
+      // CORREÇÃO CRUCIAL: Verifica se é diferente de undefined, não é null e NÃO É NaN
+      if (inputData.filters?.studentAge !== undefined && inputData.filters?.studentAge !== null && !isNaN(Number(inputData.filters.studentAge))) {
+        whereConditions.push(eq(informationalScreeningTable.studentAge, Number(inputData.filters.studentAge)));
+      }
+
+      if (inputData.filters?.ra) {
+        whereConditions.push(ilike(informationalScreeningTable.studentRa, `%${inputData.filters.ra}%`));
+      }
       const database = drizzleDatabase.getInstance();
       const { limit, offset } = calculatePagination(inputData.pagination);
       const results = await database
@@ -216,21 +291,24 @@ public async findScreenVersionByRegistration(
           studentName: item.studentName,
           studentRa: item.studentRa,
           updatedAt: item.updatedAt
-        }))
+        })),
+        page: {
+          limit: limit,
+        }
       }
       return output;
     } catch (err) {
+      console.log("list", err)
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
-
   public async updateInformationalScreening(inputData: IUpdateInformationalScreeningInputData): Promise<void> {
     try {
       const database = drizzleDatabase.getInstance();
       await database.transaction(async (tx) => {
         await tx.update(informationalScreeningTable)
-        .set({ isLatest: false })
-        .where(eq(informationalScreeningTable.id, inputData.informationalId));
+          .set({ isLatest: false })
+          .where(eq(informationalScreeningTable.id, inputData.informationalId));
         // 1. Insere a nova versão herdando o registration e incrementando o version
         const [newScreening] = await tx
           .insert(informationalScreeningTable)
@@ -274,13 +352,12 @@ public async findScreenVersionByRegistration(
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
-
   public async deleteInformationalScreening(inputData: IDeleteInformationalScreeningInputData): Promise<void> {
     try {
       const database = drizzleDatabase.getInstance();
       await database
         .delete(informationalScreeningTable)
-        .where(eq(informationalScreeningTable.id, inputData.id));
+        .where(eq(informationalScreeningTable.registration, inputData.registration));
     } catch (err) {
       throw new DrizzleORMError(JSON.stringify(err));
     }
