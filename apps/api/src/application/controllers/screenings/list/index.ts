@@ -33,6 +33,8 @@ export class ListScreeningController implements IController {
     const response: IControllerResponse<ListScreeningControllerResponseSchema> = {
       body: {
         list: useCase.items.map(item => ({
+          id: item.id,
+          student_ra: item.studentRa,
           health_unity: item.healthUnity,
           legal_guardian_name: item.legalGuardianName,
           registration: item.registration,

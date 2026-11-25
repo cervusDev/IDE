@@ -5,7 +5,7 @@ export interface IFamilyMemberWebModel {
   age: number;
   relationship: string;
   educationalAttainment: string;
-  contact: string | null;
+  contact: string;
 }
 
 export interface IInformationalScreeningWebModel {
@@ -24,31 +24,31 @@ export interface IInformationalScreeningWebModel {
   studentSchoolName: string;
   studentSchoolPeriod: string;
   studentGender: Gender;
-  studentGenderOther: string | null;
+  studentGenderOther?: string | null;
   
   // Endereço e Contato
   streetAddress: string;
   neighborhood: string;
   
   // Dados da Mãew
-  motherName?: string;
+  motherName?: string | null;
   motherAge: number | null;
-  motherEducationalAttainment: string | null;
-  motherOccupation?: string;
-  motherContact: string | null;
+  motherEducationalAttainment?: string | null;
+  motherOccupation?: string | null;
+  motherContact?: string | null;
   
   // Dados do Pai
-  fatherName?: string;
+  fatherName?: string | null;
   fatherAge: number | null;
-  fatherEducationalAttainment: string | null;
-  fatherOccupation?: string;
-  fatherContact?: string;
+  fatherEducationalAttainment?: string | null;
+  fatherOccupation?: string | null;
+  fatherContact?: string | null;
   
   // Informações Socioeconômicas
-  grossHouseholdIncome: string | null; // O Drizzle costuma retornar decimais como string por segurança de precisão
-  parentsMaritalStatus: string | null;
-  legalGuardianName: string | null;
-  religion: string | null;
+  grossHouseholdIncome: string;
+  legalGuardianName: string;
+  religion: string;
+  parentsMaritalStatus: string;
   housingStatus: HousingStatus;
 }
 

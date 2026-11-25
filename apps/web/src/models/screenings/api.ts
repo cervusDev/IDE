@@ -4,8 +4,8 @@ export interface IFamilyMemberApiModel {
   full_name: string;
   age: number;
   relationship: string;
-  educational_attainment: string | null;
-  contact: string | null;
+  educational_attainment: string;
+  contact: string;
 }
 
 export interface IInformationalScreeningApiModel {
@@ -24,56 +24,56 @@ export interface IInformationalScreeningApiModel {
   student_school_name: string;
   student_school_period: string;
   student_gender: Gender;
-  student_gender_other: string | null;
+  student_gender_other?: string | null;
   
   // Endereço e Contato
   street_address: string;
   neighborhood: string;
   
   // Dados da Mãe
-  mother_name?: string;
-  mother_age: number | null;
-  mother_educational_attainment: string | null;
-  mother_occupation?: string;
-  mother_contact: string | null;
+  mother_name?: string | null;
+  mother_age?: number | null;
+  mother_educational_attainment?: string | null;
+  mother_occupation?: string | null;
+  mother_contact?: string | null;
   
   // Dados do Pai
-  father_name?: string;
-  father_age: number | null;
-  father_educational_attainment: string | null;
-  father_occupation?: string;
-  father_contact?: string;
+  father_name?: string | null;
+  father_age?: number | null;
+  father_educational_attainment?: string | null;
+  father_occupation?: string | null;
+  father_contact?: string | null;
   
   // Informações Socioeconômicas
-  gross_household_income: string | null; // O Drizzle costuma retornar decimais como string por segurança de precisão
-  parents_marital_status: string | null;
-  legal_guardian_name: string | null;
-  religion: string | null;
-  housing_status: HousingStatus | null;
+  gross_household_income: string;
+  parents_marital_status: string;
+  legal_guardian_name: string;
+  religion: string;
+  housing_status: HousingStatus;
 }
 
 export interface IPsychosocialEvaluationApiModel {
-  mental_health_history?: string ;
-  pregnancy_and_birth?: string ;
-  early_diet?: string ;
-  current_diet?: string ;
-  sleep_routine?: string ;
-  psychomotor_development?: string ;
-  speech_and_language?: string ;
-  sphincter_control?: string ;
-  childhood_diseases?: string ;
-  medications?: string ;
-  sexuality?: string ;
-  schooling_history?: string ;
-  tics_and_habits?: string ;
-  daily_routine?: string ;
-  participates_in_project?: string ;
-  technology_access?: string ;
-  substance_use?: string ;
-  family_dynamics?: string ;
-  assistant_description?: string ;
-  guardian_perception?: string ;
-  interview_observations?: string ;
+  mental_health_history?: string | null ;
+  pregnancy_and_birth?: string | null ;
+  early_diet?: string | null ;
+  current_diet?: string | null ;
+  sleep_routine?: string | null ;
+  psychomotor_development?: string | null ;
+  speech_and_language?: string | null ;
+  sphincter_control?: string | null ;
+  childhood_diseases?: string | null ;
+  medications?: string | null ;
+  sexuality?: string | null ;
+  schooling_history?: string | null ;
+  tics_and_habits?: string | null ;
+  daily_routine?: string | null ;
+  participates_in_project?: string | null ;
+  technology_access?: string | null ;
+  substance_use?: string | null ;
+  family_dynamics?: string | null ;
+  assistant_description?: string | null ;
+  guardian_perception?: string | null ;
+  interview_observations?: string | null ;
 }
 
 export interface IBenefitApiModel {
@@ -112,5 +112,5 @@ export interface IBenefitApiModel {
   inclusion_aid?: boolean;
   
   others?: boolean;
-  others_description?: string;
+  others_description?: string | null;
 }

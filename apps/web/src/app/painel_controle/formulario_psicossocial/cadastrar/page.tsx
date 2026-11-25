@@ -12,21 +12,26 @@ import { StepFamilyComposition } from "./steps/family-composition";
 import { fullFormSchema, stepSchemas, FormSchemaType } from "./schema";
 import { useForm, FormProvider, Resolver, useWatch } from "react-hook-form";
 import { StepPsychosocialEvaluation } from "./steps/psychosocial-evaluation";
-import { useCreateScreening } from "@/hooks/useScreening";
+import { useCreateScreening, useUpdateScreening } from "@/hooks/useScreening";
 import { useAuthStore } from "@/contexts/auth";
+import { toast } from "sonner";
 
 interface PsychosocialFormProps {
   initialData?: Partial<FormSchemaType>;
   formId?: string;
-  readOnly?: boolean; // <- Nova prop para modo visualização
+  readOnly?: boolean;
 }
 
 export const PsychosocialForm = ({ initialData, formId, readOnly = false }: PsychosocialFormProps) => {
   const router = useRouter();
   const { user } = useAuthStore();
-  const { mutate, isPending } = useCreateScreening();
+
+  const { mutate: createScreening, isPending: isCreating } = useCreateScreening();
+  const { mutate: updateScreening, isPending: isUpdating } = useUpdateScreening();
+
   const [currentStep, setCurrentStep] = useState(firstStepValue);
   const isEditing = Boolean(formId) && !readOnly;
+  const isMutating = isCreating || isUpdating;
 
   const methods = useForm<FormSchemaType>({
     resolver: zodResolver(fullFormSchema) as Resolver<FormSchemaType>,
@@ -71,7 +76,114 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
 
   const onSubmit = useCallback((data: FormSchemaType) => {
     if (readOnly) return;
-    mutate({
+    if (isEditing && formId) {
+      updateScreening(
+        {
+          benefits: {
+            birthAid: data.birthAid,
+            childLaborEradication: data.childLaborEradication,
+            continuousCashBenefit: data.continuousCashBenefit,
+            elderlyCard: data.elderlyCard,
+            emergencyAid: data.emergencyAid,
+            familyGrant: data.familyGrant,
+            feeExemption: data.feeExemption,
+            freeTransit: data.freeTransit,
+            gasAid: data.gasAid,
+            greenGrant: data.greenGrant,
+            inclusionAid: data.inclusionAid,
+            menstrualDignityProgram: data.menstrualDignityProgram,
+            milkProgram: data.milkProgram,
+            others: data.others,
+            othersDescription: data.othersDescription,
+            participatesInPaefi: data.participatesInPaefi,
+            participatesInPaif: data.participatesInPaif,
+            peDeMeia: data.peDeMeia,
+            socialEnergyTariff: data.socialEnergyTariff,
+            socialHousing: data.socialHousing,
+            socialRent: data.socialRent,
+            socialWaterTariff: data.socialWaterTariff,
+            stateIncomeAid: data.stateIncomeAid,
+            youthId: data.youthId
+          },
+          familyMembers: data.members.map(item => ({
+            age: Number(item.age),
+            contact: item.contact,
+            educationalAttainment: item.educationalAttainment,
+            fullName: item.fullName,
+            relationship: item.relationship
+          })),
+          informational: {
+            assigneeId: String(user?.id),
+            fatherAge: Number(data.fatherAge),
+            fatherContact: data.fatherContact,
+            fatherEducationalAttainment: data.fatherEducationalAttainment,
+            fatherName: data.fatherName,
+            fatherOccupation: data.fatherOccupation,
+            grossHouseholdIncome: data.grossHouseholdIncome,
+            healthUnity: data.healthUnity,
+            housingStatus: data.housingStatus,
+            legalGuardianName: data.legalGuardianName,
+            motherAge: Number(data.motherAge),
+            motherContact: data.motherContact,
+            motherEducationalAttainment: data.motherEducationalAttainment,
+            motherName: data.motherName,
+            motherOccupation: data.motherOccupation,
+            neighborhood: data.neighborhood,
+            parentsMaritalStatus: data.parentMaritalStatus,
+            registration: data.registration,
+            religion: data.religion,
+            streetAddress: data.streetAddress,
+            studentAge: Number(data.studentAge),
+            studentBirthDate: data.studentBirthDate,
+            studentColor: data.studentColor,
+            studentEducationalAttainment: data.studentEducationalAttainment,
+            studentGender: data.studentGender,
+            studentGenderOther: data.studentGenderOther,
+            studentName: data.studentName,
+            studentRa: data.studentRa,
+            studentSchoolName: data.studentSchoolName,
+            studentSchoolPeriod: data.studentSchoolPeriod,
+            nis: data.nis
+          },
+          psychosocialEvaluation: {
+            assistantDescription: data.assistantDescription,
+            childhoodDiseases: data.childhoodDiseases,
+            currentDiet: data.currentDiet,
+            dailyRoutine: data.dailyRoutine,
+            earlyDiet: data.earlyDiet,
+            familyDynamics: data.familyDynamics,
+            guardianPerception: data.guardianPerception,
+            interviewObservations: data.interviewObservations,
+            medications: data.medications,
+            mentalHealthHistory: data.mentalHealthHistory,
+            participatesInProject: data.participatesInProject,
+            pregnancyAndBirth: data.pregnancyAndBirth,
+            psychomotorDevelopment: data.psychomotorDevelopment,
+            schoolingHistory: data.schoolingHistory,
+            sexuality: data.sexuality,
+            sleepRoutine: data.sleepRoutine,
+            speechAndLanguage: data.speechAndLanguage,
+            sphincterControl: data.sphincterControl,
+            substanceUse: data.substanceUse,
+            technologyAccess: data.technologyAccess,
+            ticsAndHabits: data.ticsAndHabits,
+          },
+          registration: String(initialData?.registration),
+          coAuthorId: String(user?.id),
+        },
+        {
+          onSuccess: () => {
+            toast.success('Triagem atualizada com sucesso!');
+            router.push('/painel_controle/formulario_psicossocial/');
+          },
+          onError: () => {
+            toast.error('Falha ao atualizar a triagem. Verifique os dados.');
+          },
+        }
+      );
+      return;
+    }
+    createScreening({
       benefits: {
         birthAid: data.birthAid,
         childLaborEradication: data.childLaborEradication,
@@ -98,20 +210,27 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
         stateIncomeAid: data.stateIncomeAid,
         youthId: data.youthId
       },
+      familyMembers: data.members.map(item => ({
+        age: Number(item.age),
+        contact: item.contact,
+        educationalAttainment: item.educationalAttainment,
+        fullName: item.fullName,
+        relationship: item.relationship
+      })),
       informational: {
         assigneeId: String(user?.id),
         fatherAge: Number(data.fatherAge),
         fatherContact: data.fatherContact,
-        fatherEducationalAttainment: data.fatherEducationalAttainment || null,
+        fatherEducationalAttainment: data.fatherEducationalAttainment,
         fatherName: data.fatherName,
         fatherOccupation: data.fatherOccupation,
-        grossHouseholdIncome: String(data.grossHouseholdIncome),
+        grossHouseholdIncome: data.grossHouseholdIncome,
         healthUnity: data.healthUnity,
         housingStatus: data.housingStatus,
         legalGuardianName: data.legalGuardianName,
         motherAge: Number(data.motherAge),
-        motherContact: data.motherContact || null,
-        motherEducationalAttainment: data.motherEducationalAttainment || null,
+        motherContact: data.motherContact,
+        motherEducationalAttainment: data.motherEducationalAttainment,
         motherName: data.motherName,
         motherOccupation: data.motherOccupation,
         neighborhood: data.neighborhood,
@@ -119,7 +238,7 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
         registration: data.registration,
         religion: data.religion,
         streetAddress: data.streetAddress,
-        studentAge: String(data.studentAge),
+        studentAge: Number(data.studentAge),
         studentBirthDate: data.studentBirthDate,
         studentColor: data.studentColor,
         studentEducationalAttainment: data.studentEducationalAttainment,
@@ -154,23 +273,33 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
         technologyAccess: data.technologyAccess,
         ticsAndHabits: data.ticsAndHabits,
       },
-      familyMembers: data.members.map(item => ({
-        age: item.age,
-        contact: item.contact,
-        educationalAttainment: item.educationalAttainment,
-        fullName: item.fullName,
-        relationship: item.relationship
-      }))
     }, {
       onSuccess: () => {
-        alert('Triagem criada com sucesso!');
-        router.push('/painel_controle/formulario_psicossocial/')
+        toast.success('Triagem criada com sucesso!');
+        router.push('/painel_controle/formulario_psicossocial/');
       },
       onError: () => {
-        alert('Falha ao salvar a triagem. Verifique os dados.');
+        toast.success('Falha ao salvar a triagem. Verifique os dados.');
       },
     });
-  }, [mutate, readOnly, router, user?.id])
+  }, [readOnly, user?.id, isEditing, formId, createScreening, updateScreening, initialData?.registration, router]);
+
+
+  const [readyStep, setReadyStep] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (currentStep !== stepTitles.length) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setReadyStep(currentStep);
+    }, 350);
+
+    return () => window.clearTimeout(timer);
+  }, [currentStep]);
+
+  const isSubmitReady = currentStep === stepTitles.length && readyStep === currentStep;
 
   return (
     <div className="w-full max-w-5xl mx-auto p-6 sm:p-8 bg-white rounded-2xl border border-zinc-200 shadow-sm my-6 text-zinc-900">
@@ -215,7 +344,7 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
               {readOnly ? (
                 <button
                   type="button"
-                  disabled={isPending}
+                  disabled={isMutating}
                   onClick={() => router.push("/painel_controle/formulario_psicossocial/")}
                   className="px-6 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl font-semibold transition-all cursor-pointer"
                 >
@@ -223,8 +352,9 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
                 </button>
               ) : null}
 
-              {currentStep < stepTitles.length ? (
+              {currentStep < stepTitles.length && !isSubmitReady ? (
                 <button
+                  key="next-step-btn"
                   type="button"
                   onClick={handleNext}
                   className="px-6 py-2.5 bg-[#D72685] hover:opacity-80 text-white rounded-xl font-bold transition-opacity shadow-sm cursor-pointer"
@@ -233,11 +363,16 @@ export const PsychosocialForm = ({ initialData, formId, readOnly = false }: Psyc
                 </button>
               ) : !readOnly ? (
                 <button
+                  key="submit-form-btn"
                   type="submit"
-                  disabled={isSubmitting || isPending}
+                  disabled={isSubmitting || isMutating || !isSubmitReady}
                   className="px-6 py-2.5 bg-[#43B02A] hover:opacity-80 text-white rounded-xl font-bold transition-opacity shadow-sm disabled:opacity-50 cursor-pointer"
                 >
-                  {isSubmitting ? "Salvando..." : isEditing ? "Salvar Alterações" : "Finalizar & Enviar"}
+                  {(isSubmitting || isMutating)
+                    ? "Salvando..."
+                    : isEditing
+                      ? "Salvar Alterações"
+                      : "Finalizar & Enviar"}
                 </button>
               ) : null}
             </div>

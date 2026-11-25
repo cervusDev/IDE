@@ -4,7 +4,7 @@ export interface IListScreeningInputData {
   registration?: string
   studentName?: string
   studentAge?: string
-  ra?: string
+  studentRa?: string
   page?: string
   limit?: string
 }

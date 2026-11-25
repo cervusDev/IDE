@@ -7,6 +7,14 @@ export const updateScreeningControllerParams = z.object({
 
 export type UpdateScreeningControllerParams = z.infer<typeof updateScreeningControllerParams>;
 
+// Helper para strings opcionais/anuláveis (limpa "" e "null")
+const optionalString = z.preprocess((val) => {
+  if (val === "" || val === null || val === undefined || val === "null") {
+    return null;
+  }
+  return String(val);
+}, z.string().nullable().optional());
+
 export const updateScreeningControllerBody = z.object({
   // ==========================================
   // ETAPA 1: Dados Pessoais e Informações Principais
@@ -20,7 +28,7 @@ export const updateScreeningControllerBody = z.object({
   student_name: z.string().min(1, 'O nome do aluno é obrigatório'),
   student_birth_date: z.string().min(10, 'A data de nascimento deve ter o formato DD/MM/AAAA').max(10, 'A data de nascimento deve ter o formato DD/MM/AAAA'),
   student_color: z.string().min(1, 'A cor/raça do aluno é obrigatória'),
-  student_age: z.string({ message: 'A idade do aluno é obrigatória' }),
+  student_age: z.coerce.string({ message: 'A idade do aluno é obrigatória' }).min(1, 'A idade do aluno é obrigatória'),
   student_ra: z.string().min(1, 'O número do RA é obrigatório'),
   student_educational_attainment: z.string().min(1, 'A escolaridade do aluno é obrigatória'),
   student_school_name: z.string().min(1, 'O nome da escola do aluno é obrigatório'),
@@ -42,11 +50,11 @@ export const updateScreeningControllerBody = z.object({
   mother_contact: z.string().nullable(),
 
   // Dados do Pai (Opcionais)
-  father_name: z.string().optional(),
-  father_age: z.coerce.string().optional(),
+  father_name: z.string().nullish(),
+  father_age: optionalString,
   father_educational_attainment: z.string().nullable(),
-  father_occupation: z.string().optional(),
-  father_contact: z.string().optional(),
+  father_occupation: optionalString,
+  father_contact: optionalString,
 
   // Contexto Socioeconômico e Familiar
   gross_household_income: z.coerce
@@ -99,10 +107,10 @@ export const updateScreeningControllerBody = z.object({
   family_members: z.array(
     z.object({
       full_name: z.string().min(1, 'O nome completo é obrigatório').max(255),
-      age: z.string().min(1, 'A idade é obrigatória'),
+      age: z.number({ message: 'A idade é obrigatória' }).min(1, 'A idade é obrigatória'),
       relationship: z.string().min(1, 'O grau de parentesco é obrigatório').max(100),
-      educational_attainment: z.string().max(255).optional().or(z.literal('')),
-      contact: z.string().max(50).optional().or(z.literal('')),
+      educational_attainment: z.string().max(255),
+      contact: z.string().max(12),
     })
   ).min(1, 'Adicione pelo menos um membro familiar.'),
 

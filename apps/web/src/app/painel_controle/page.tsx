@@ -1,10 +1,19 @@
+"use client";
+
+import { useCountScreenings } from "@/hooks/useScreening";
 import Link from "next/link";
 
 export default function HomePage() {
+  const { data, isLoading, isError } = useCountScreenings();
+  const familyCountValue = isLoading
+    ? "..."
+    : isError
+      ? "—"
+      : String(data?.count ?? 0);
   const stats = [
     {
       label: "Famílias Cadastradas",
-      value: "94",
+      value: familyCountValue,
       change: "Núcleos Familiares",
       disabled: false,
     },

@@ -11,7 +11,7 @@ export class ListScreeningUseCase implements IUseCase<IInputData, OutputData> {
     this.screeningRepository = factory.makeScreeningRepository();
   }
   public async execute(inputData: IInputData): Promise<OutputData> {
-    const limit = inputData.pagination.limit || 20;
+    const limit = inputData.pagination.limit || 8;
     const filters = {
       healthUnity: inputData.filters?.healthUnity,
       nis: inputData.filters?.nis,
@@ -32,6 +32,8 @@ export class ListScreeningUseCase implements IUseCase<IInputData, OutputData> {
     ]);
     const items: ListDTO[] = screenings.list.map(item => ({
       healthUnity: item.healthUnity,
+      id: item.id,
+      studentRa: item.studentRa,
       legalGuardianName: item.legalGuardianName!,
       nis: item.nis,
       registration: item.registration,

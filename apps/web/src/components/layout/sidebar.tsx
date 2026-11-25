@@ -3,18 +3,29 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/contexts/auth";
 
 export function Sidebar() {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const pathname = usePathname();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navigation = [
     { name: "Visão Geral", href: "/painel_controle" },
     { name: "Form. socioassistencial", href: "/painel_controle/formulario_psicossocial" },
   ];
+
+  function handleLogout() {
+    setIsSidebarOpen(false);
+    logout?.();
+    queryClient.clear();
+    router.replace("/");
+    router.refresh();
+  }
 
   return (
     <>
@@ -46,8 +57,9 @@ export function Sidebar() {
 
       {/* Sidebar Lateral */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col justify-between border-r border-zinc-200 bg-white p-6 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 shadow-sm ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col justify-between border-r border-zinc-200 bg-white p-6 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 shadow-sm ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         <div className="flex flex-col gap-8">
           {/* Header da Sidebar */}
@@ -84,10 +96,11 @@ export function Sidebar() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsSidebarOpen(false)}
-                    className={`flex h-10 items-center rounded-xl px-3 text-sm font-medium transition-colors ${isActive
+                    className={`flex h-10 items-center rounded-xl px-3 text-sm font-medium transition-colors ${
+                      isActive
                         ? "bg-[#F2CD00] text-white font-semibold shadow-sm"
                         : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
-                      }`}
+                    }`}
                   >
                     {item.name}
                   </Link>
@@ -114,12 +127,13 @@ export function Sidebar() {
             </div>
           </div>
 
-          <Link
-            href="/"
-            className="flex h-9 w-full items-center justify-center rounded-xl border border-[#D72685] text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex h-9 w-full items-center justify-center rounded-xl border border-[#D72685] text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 cursor-pointer"
           >
             Sair
-          </Link>
+          </button>
         </div>
       </aside>
     </>

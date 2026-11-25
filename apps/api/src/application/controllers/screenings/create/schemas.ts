@@ -1,6 +1,28 @@
 import { genderEnumSchemaValues, housingStatusSchemaValues } from '@shared/models/screenings';
 import { z } from 'zod';
 
+const optionalString = z.preprocess((val) => {
+  if (val === "" || val === null || val === undefined || val === "null") {
+    return null;
+  }
+  return String(val);
+}, z.string().nullable().optional());
+
+const optionalInt = z.preprocess((val) => {
+  if (
+    val === "" ||
+    val === null ||
+    val === undefined ||
+    val === "null" ||
+    val === "undefined"
+  ) {
+    return null;
+  }
+
+  const num = typeof val === "number" ? val : Number(String(val).trim());
+  return Number.isInteger(num) ? num : null;
+}, z.number().int().nullable().optional());
+
 export const createScreeningControllerBody = z.object({
   // ==========================================
   // ETAPA 1: Dados Pessoais e Informações Principais
@@ -14,7 +36,7 @@ export const createScreeningControllerBody = z.object({
   student_name: z.string().min(1, 'O nome do aluno é obrigatório'),
   student_birth_date: z.string().min(10, 'A data de nascimento deve ter o formato DD/MM/AAAA').max(10, 'A data de nascimento deve ter o formato DD/MM/AAAA'),
   student_color: z.string().min(1, 'A cor/raça do aluno é obrigatória'),
-  student_age: z.string({ message: 'A idade do aluno é obrigatória' }),
+  student_age: z.number({ message: 'A idade é obrigatória' }).min(1, 'A idade é obrigatória'),
   student_ra: z.string().min(1, 'O número do RA é obrigatório'),
   student_educational_attainment: z.string().min(1, 'A escolaridade do aluno é obrigatória'),
   student_school_name: z.string().min(1, 'O nome da escola do aluno é obrigatório'),
@@ -22,30 +44,28 @@ export const createScreeningControllerBody = z.object({
   student_gender: z.enum(genderEnumSchemaValues, {
     message: 'Selecione um tipo de gênero válido',
   }),
-  student_gender_other: z.string().optional(),
+  student_gender_other: z.string().optional().nullable(),
 
   // Endereço
   street_address: z.string().min(1, 'O endereço da família é obrigatório'),
   neighborhood: z.string().min(1, 'O bairro é obrigatório'),
 
   // Dados da Mãe (Opcionais)
-  mother_name: z.string().optional(),
-  mother_age: z.coerce.string().optional(),
-  mother_educational_attainment: z.string().nullable(),
-  mother_occupation: z.string().optional(),
-  mother_contact: z.string().nullable(),
+  mother_name: optionalString,
+  mother_age: optionalInt,
+  mother_educational_attainment: optionalString,
+  mother_occupation: optionalString,
+  mother_contact:optionalString,
 
   // Dados do Pai (Opcionais)
-  father_name: z.string().optional(),
-  father_age: z.coerce.string().optional(),
-  father_educational_attainment: z.string().nullable(),
-  father_occupation: z.string().optional(),
-  father_contact: z.string().optional(),
+  father_name: optionalString,
+  father_age: optionalInt,
+  father_educational_attainment: optionalString,
+  father_occupation: optionalString,
+  father_contact: optionalString,
 
   // Contexto Socioeconômico e Familiar
-  gross_household_income: z.coerce
-    .number({ message: 'A renda bruta familiar é obrigatória' })
-    .positive('A renda bruta familiar deve ser um valor positivo'),
+  gross_household_income: z.string({ message: 'A renda bruta familiar é obrigatória' }),
   parents_marital_status: z.string().min(1, 'O estado civil dos pais é obrigatório'),
   legal_guardian_name: z.string().min(1, 'O nome do responsável legal é obrigatório'),
   religion: z.string().min(1, 'O campo religião é obrigatório'),
@@ -93,10 +113,10 @@ export const createScreeningControllerBody = z.object({
   family_members: z.array(
     z.object({
       full_name: z.string().min(1, 'O nome completo é obrigatório').max(255),
-      age: z.string().min(1, 'A idade é obrigatória'),
+      age: z.number({ message: 'A idade é obrigatória' }).min(1, 'A idade é obrigatória'),
       relationship: z.string().min(1, 'O grau de parentesco é obrigatório').max(100),
-      educational_attainment: z.string().max(255).optional().or(z.literal('')),
-      contact: z.string().max(50).optional().or(z.literal('')),
+      educational_attainment: z.string().max(255),
+      contact: z.string().max(12),
     })
   ).min(1, 'Adicione pelo menos um membro familiar.'),
 

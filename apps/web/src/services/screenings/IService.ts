@@ -1,4 +1,5 @@
-import { ICreateScreeningService } from "./create/InputData";
+import { ICountSCreeningOutputData } from "./count/OutputData";
+import { ICreateScreeningServiceInputData } from "./create/InputData";
 import { IDeleteScreeningInputData } from "./delete/InputData";
 import { IFindScreeningByIdInputData } from "./findById/InputData";
 import { IFindScreeningByIdOutputData } from "./findById/OutputData";
@@ -9,10 +10,12 @@ import { IListScreeningVersionsOutputData } from "./listVersions/OutputData";
 import { IUpdateScreeningInputData } from "./update/InputData";
 
 export interface IService {
+  count(): Promise<ICountSCreeningOutputData>;
   update(inputData: IUpdateScreeningInputData): Promise<void>;
   delete(inputData: IDeleteScreeningInputData): Promise<void>;
+  updateAllStudentsAges(): Promise<void>;
   findById(inputData: IFindScreeningByIdInputData): Promise<IFindScreeningByIdOutputData>
   listVersions(inputData: IListScreningVersionsInputData): Promise<IListScreeningVersionsOutputData>
   list(inputData: IListScreeningInputData): Promise<IListScreeningOutputData>;
-  create(inputData: ICreateScreeningService): Promise<void>;
+  create(inputData: ICreateScreeningServiceInputData): Promise<void>;
 }

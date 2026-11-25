@@ -1,106 +1,128 @@
-import { PsychosocialForm } from "../../cadastrar/page"; // Ajuste o caminho relativo conforme sua estrutura
-import { FormSchemaType } from "../../cadastrar/schema";
+'use client'
+
+import { use, useState } from "react";
+import { PsychosocialForm } from "../../cadastrar/page";
+import { useVersionsScreening, useFindScreening } from "@/hooks/useScreening"; // Ajuste o caminho do hook
+import { Loader2, History } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-async function getFormData(id: string): Promise<Partial<FormSchemaType>> {
-  await new Promise((resolve) => setTimeout(resolve, 200));
+export default function VisualizarFormularioPage({ params }: PageProps) {
+  const resolvedParams = use(params);
+  const initialId = resolvedParams.id;
+  const [selectedId, setSelectedId] = useState<string>(initialId);
+  const { data: screeningDetail, isLoading: isLoadingDetail, isError: isErrorDetail } = useFindScreening(selectedId);
+  const registration = screeningDetail?.informational?.registration ?? "";
+  const { data: versionsData } = useVersionsScreening(
+    { registration },
+    { enabled: Boolean(registration) }
+  );
 
-  // Mock ou chamada à API real para buscar os dados do registro
-  const mockDatabaseRecord: Partial<FormSchemaType> = {
-    healthUnity: "UBS Central",
-    registration: "MAT-2026-001",
-    nis: "123.45678.90-1",
-    studentName: "João Pedro Silva",
-    studentBirthDate: "2016-05-15",
-    studentColor: "Parda",
-    studentAge: "10",
-    studentRa: "98765432-X",
-    studentGender: 'M',
-    studentEducationalAttainment: "Ensino Fundamental I",
-    studentSchoolName: "Escola Municipal Exemplo",
-    studentSchoolPeriod: "Matutino",
-    streetAddress: "Rua das Flores, 123",
-    neighborhood: "Centro",
-    motherName: "Maria da Silva",
-    motherAge: "34",
-    motherEducationalAttainment: "Ensino Médio Completo",
-    motherOccupation: "Do Lar",
-    motherContact: "(14) 99888-7766",
-    fatherName: "Carlos Alberto da Silva",
-    fatherAge: "38",
-    fatherEducationalAttainment: "Ensino Fundamental Completo",
-    fatherOccupation: "Pedreiro",
-    fatherContact: "(14) 99777-6655",
-    grossHouseholdIncome: 1412.00,
-    parentMaritalStatus: "Casados",
-    legalGuardianName: "Maria da Silva",
-    religion: "Católica",
-    housingStatus: "PRÓPRIA",
-    familyGrant: true,
-    continuousCashBenefit: false,
-    gasAid: true,
-    birthAid: false,
-    emergencyAid: false,
-    stateIncomeAid: false,
-    socialEnergyTariff: true,
-    socialWaterTariff: false,
-    peDeMeia: false,
-    milkProgram: true,
-    menstrualDignityProgram: false,
-    youthId: false,
-    socialRent: false,
-    socialHousing: false,
-    greenGrant: false,
-    participatesInPaif: true,
-    participatesInPaefi: false,
-    childLaborEradication: false,
-    feeExemption: true,
-    elderlyCard: false,
-    freeTransit: false,
-    inclusionAid: false,
-    others: false,
-    othersDescription: "",
-    members: [
-      {
-        fullName: "Ana Clara da Silva",
-        age: "6",
-        relationship: "Irmã(o)",
-        educationalAttainment: "Educação Infantil",
-        contact: "Não possui",
-      },
-    ],
-    mentalHealthHistory: "Nenhum histórico psiquiátrico na família.",
-    childhoodDiseases: "Bronquite asmática tratada na primeira infância.",
-    medications: "Uso esporádico de bomba de Salbutamol.",
-    pregnancyAndBirth: "Gestação a termo, sem intercorrências.",
-    earlyDiet: "Aleitamento materno exclusivo até os 6 meses.",
-    currentDiet: "Alimentação regular variada.",
-    sleepRoutine: "Dorme cerca de 8h por noite, sono tranquilo.",
-    psychomotorDevelopment: "Desenvolvimento motor dentro dos marcos esperados.",
-    speechAndLanguage: "Fala articulada e sem alterações aparentes.",
-    sphincterControl: "Controle esfincteriano adquirido aos 2 anos.",
-    ticsAndHabits: "Not present.",
-    sexuality: "Sem observações relevantes para a faixa etária.",
-    schoolingHistory: "Bom desempenho escolar, boa adaptação com os colegas.",
-    dailyRoutine: "Estuda pela manhã e frequenta oficinas sociais à tarde.",
-    participatesInProject: "Sim, projeto esportivo comunitário.",
-    technologyAccess: "Acesso a celular com supervisão dos pais.",
-    substanceUse: "Negado no núcleo familiar.",
-    familyDynamics: "Vínculos familiares fortalecidos e dialogados.",
-    assistantDescription: "Criança comunicativa e integrada com as demandas propostas.",
-    guardianPerception: "Mãe relata satisfação com o desenvolvimento escolar.",
-    interviewObservations: "Entrevista realizada com a presença da genitora em clima colaborativo.",
+  // 3. Busca a lista de versões vinculadas ao registro (para permitir a troca de versão na tela)
+
+  if (isLoadingDetail) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-[600px] gap-3">
+        <Loader2 className="w-8 h-8 animate-spin text-[#D72685]" />
+        <p className="text-zinc-600 font-medium">Carregando detalhes do cadastro...</p>
+      </div>
+    );
+  }
+
+  if (isErrorDetail || !screeningDetail) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-[600px] gap-2">
+        <p className="text-red-600 font-semibold">Erro ao carregar os dados do formulário.</p>
+        <p className="text-zinc-500 text-sm">O registro solicitado não foi encontrado ou ocorreu uma falha na rede.</p>
+      </div>
+    );
+  }
+
+  // Mapeia os dados vindos da API para o formato esperado pelo `FormSchemaType` do PsychosocialForm
+  const formattedInitialData = {
+    healthUnity: screeningDetail.informational.healthUnity,
+    registration: screeningDetail.informational.registration,
+    nis: screeningDetail.informational.nis,
+    studentName: screeningDetail.informational.studentName,
+    studentBirthDate: screeningDetail.informational.studentBirthDate,
+    studentColor: screeningDetail.informational.studentColor,
+    studentAge: screeningDetail.informational.studentAge,
+    studentRa: screeningDetail.informational.studentRa,
+    studentGender: screeningDetail.informational.studentGender as any,
+    studentEducationalAttainment: screeningDetail.informational.studentEducationalAttainment,
+    studentSchoolName: screeningDetail.informational.studentSchoolName,
+    studentSchoolPeriod: screeningDetail.informational.studentSchoolPeriod,
+    streetAddress: screeningDetail.informational.streetAddress,
+    neighborhood: screeningDetail.informational.neighborhood,
+
+    motherName: screeningDetail.informational.motherName,
+    motherAge: screeningDetail.informational.motherAge,
+    motherEducationalAttainment: screeningDetail.informational.motherEducationalAttainment,
+    motherOccupation: screeningDetail.informational.motherOccupation,
+    motherContact: screeningDetail.informational.motherContact,
+
+    fatherName: screeningDetail.informational.fatherName,
+    fatherAge: screeningDetail.informational.fatherAge,
+    fatherEducationalAttainment: screeningDetail.informational.fatherEducationalAttainment,
+    fatherOccupation: screeningDetail.informational.fatherOccupation,
+    fatherContact: screeningDetail.informational.fatherContact,
+
+    grossHouseholdIncome: screeningDetail.informational.grossHouseholdIncome,
+    parentMaritalStatus: screeningDetail.informational.parentsMaritalStatus,
+    legalGuardianName: screeningDetail.informational.legalGuardianName,
+    religion: screeningDetail.informational.religion,
+    housingStatus: screeningDetail.informational.housingStatus as any,
+
+    // Benefícios Sociais
+    ...screeningDetail.benefits,
+
+    // Membros da Família
+    members: screeningDetail.familyMembers.map((member) => ({
+      fullName: member.fullName,
+      age: member.age,
+      relationship: member.relationship,
+      educational_attainment: member.educationalAttainment, // Ajuste caso a chave no form seja educationalAttainment
+      educationalAttainment: member.educationalAttainment,
+      contact: member.contact,
+    })),
+
+    // Avaliação Psicossocial
+    ...screeningDetail.psychosocialEvaluation,
   };
 
-  return mockDatabaseRecord;
-}
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-6 space-y-4">
+      {/* Barra superior de histórico / seletor de versões */}
+      {versionsData?.list && versionsData.list.length > 1 && (
+        <div className="bg-white p-3 rounded-2xl border border-zinc-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-fit">
+          <div className="flex items-center gap-2 text-zinc-700 font-medium text-sm whitespace-nowrap">
+            <History className="w-4 h-4 text-[#D72685] shrink-0" />
+            <span>Histórico de Versões:</span>
+          </div>
+          <div className="w-full sm:w-auto">
+            <select
+              value={selectedId}
+              onChange={(e) => setSelectedId(e.target.value)}
+              className="bg-zinc-50 border border-zinc-300 text-zinc-800 text-sm rounded-xl px-3 py-1.5 outline-none focus:border-[#D72685] transition w-full sm:w-52"
+            >
+              {versionsData.list.map((v) => (
+                <option key={v.id} value={v.id}>
+                  Versão {v.version} {v.isLatest ? "⭐ (Atual)" : ""}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
 
-export default async function VisualizarFormularioPage({ params }: PageProps) {
-  const { id } = await params;
-  const initialData = await getFormData(id);
-
-  return <PsychosocialForm initialData={initialData} formId={id} readOnly={true} />;
+      {/* Formulário em modo de visualização (readOnly={true}) */}
+      <PsychosocialForm
+        initialData={formattedInitialData as any}
+        formId={selectedId}
+        readOnly={true}
+      />
+    </div>
+  );
 }

@@ -7,6 +7,36 @@ import { z } from "zod";
 const housingStatusValues = ['ALUGADO', 'PRÓPRIO', 'CEDIDO'] as const;
 const genderEnum = ['M', 'F', 'O'] as const;
 
+const optionalString = z.preprocess((val) => {
+  if (val === "" || val === null || val === undefined || val === "null") {
+    return undefined;
+  }
+  return String(val);
+}, z.string().optional());
+
+const optionalInt = z.preprocess((val) => {
+  if (
+    val === "" ||
+    val === null ||
+    val === undefined ||
+    val === "null" ||
+    val === "undefined"
+  ) {
+    return undefined;
+  }
+
+  const num = typeof val === "number" ? val : Number(String(val).trim());
+  return Number.isInteger(num) ? num : null;
+}, z.number().int().optional());
+
+const cleanContact = z.preprocess(
+  (val) => {
+      const digits = String(val).replace(/\D/g, "");
+      return digits;
+  },
+  z.string().max(12)
+);
+
 // Passo 1: Dados Pessoais
 export const step1Schema = z.object({
   // Identificação e Cadastro
@@ -32,23 +62,22 @@ export const step1Schema = z.object({
   neighborhood: z.string().min(1, 'O bairro é obrigatório'),
 
   // Dados da Mãe (Opcionais)
-  motherName: z.string().optional(),
-  motherAge: z.coerce.string().optional(),
-  motherEducationalAttainment: z.string().optional(),
-  motherOccupation: z.string().optional(),
-  motherContact: z.string().optional(),
+  motherName: optionalString,
+  motherAge: optionalInt,
+  motherEducationalAttainment: optionalString,
+  motherOccupation: optionalString,
+  motherContact: cleanContact,
 
   // Dados do Pai (Opcionais)
-  fatherName: z.string().optional(),
-  fatherAge: z.coerce.string().optional(),
-  fatherEducationalAttainment: z.string().optional(),
-  fatherOccupation: z.string().optional(),
-  fatherContact: z.string().optional(),
+  fatherName: optionalString,
+  fatherAge: optionalInt,
+  fatherEducationalAttainment: optionalString,
+  fatherOccupation: optionalString,
+  fatherContact: cleanContact,
 
   // Contexto Socioeconômico e Familiar
   grossHouseholdIncome: z.coerce
-    .number({ message: 'A renda bruta familiar é obrigatória' })
-    .positive('A renda bruta familiar deve ser um valor positivo'),
+    .string({ message: 'A renda bruta familiar é obrigatória' }),
   parentMaritalStatus: z.string().min(1, 'O estado civil dos pais é obrigatório'),
   legalGuardianName: z.string().min(1, 'O nome do responsável legal é obrigatório'),
   religion: z.string().min(1, 'O campo religião é obrigatório'),
@@ -105,7 +134,7 @@ export const familyMemberSchema = z.object({
   age: z.string().min(1, 'A idade é obrigatória'),
   relationship: z.string().min(1, 'O grau de parentesco é obrigatório').max(100),
   educationalAttainment: z.string().max(255),
-  contact: z.string().max(50),
+  contact: cleanContact
 });
 
 export const step3Schema = z.object({

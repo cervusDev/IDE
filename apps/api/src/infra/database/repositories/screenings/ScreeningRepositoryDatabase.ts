@@ -1,4 +1,4 @@
-import { and, count, eq, ilike, SQL } from 'drizzle-orm';
+import { and, count, eq, ilike, sql, SQL } from 'drizzle-orm';
 import DrizzleORMError from "@infra/database/errors/DrizzleORMError";
 import { ICreateInformationalScreeningInputData } from "./dtos/createInformationalScreening/InputData";
 import { IDeleteInformationalScreeningInputData } from "./dtos/deleteInformationalScreening/InputData";
@@ -21,6 +21,17 @@ import { IListByRegistrationInputData } from './dtos/listByRegistration/InputDat
 import { IListByRegistrationOutputData } from './dtos/listByRegistration/OutputData';
 
 export class ScreeningRepositoryDatabase implements IScreeningRepository {
+  public async updateAllStudentAge(): Promise<void> {
+    try {
+      const database = drizzleDatabase.getInstance();
+      await database.execute(sql`
+        UPDATE ${informationalScreeningTable}
+        SET student_age = EXTRACT(YEAR FROM AGE(CURRENT_DATE, TO_DATE(${informationalScreeningTable.studentBirthDate}, 'DD/MM/YYYY')))::integer
+      `);
+    } catch (err) {
+      throw new DrizzleORMError(JSON.stringify(err));
+    }
+  }
   public async listByRegistration(inputData: IListByRegistrationInputData): Promise<IListByRegistrationOutputData> {
     try {
       const database = drizzleDatabase.getInstance();
@@ -107,7 +118,9 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
   }
   public async countInformationalScreening(inputData: ICountInformationalScreeningInputData): Promise<ICountInformationalScreeningOutputData> {
     try {
-      const whereConditions: SQL[] = [];
+      const whereConditions: SQL[] = [
+        eq(informationalScreeningTable.isLatest, true) // <-- Garanta que está aqui também
+      ];
       if (inputData.filters?.healthUnity) {
         whereConditions.push(ilike(informationalScreeningTable.healthUnity, `%${inputData.filters.healthUnity}%`));
       }
@@ -143,7 +156,6 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
       }
       return output;
     } catch (err) {
-      console.log('count', err)
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
@@ -217,13 +229,14 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
 
       return output;
     } catch (err) {
-      console.log('err', err)
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }
   public async listInformationalScreening(inputData: IListInformationScreeningInputData): Promise<IListInformationalScreeningOutput> {
     try {
-      const whereConditions: SQL[] = [];
+      const whereConditions: SQL[] = [
+        eq(informationalScreeningTable.isLatest, true)
+      ];
       if (inputData.filters?.healthUnity) {
         whereConditions.push(ilike(informationalScreeningTable.healthUnity, `%${inputData.filters.healthUnity}%`));
       }
@@ -299,7 +312,6 @@ export class ScreeningRepositoryDatabase implements IScreeningRepository {
       }
       return output;
     } catch (err) {
-      console.log("list", err)
       throw new DrizzleORMError(JSON.stringify(err));
     }
   }

@@ -1,10 +1,12 @@
 export interface IListScreeningOutputData {
   list: {
+    id: string;
     studentName: string;
-    studentAge: number;
+    studentAge: string;
     legalGuardianName: string;
-    nis: string | null;
+    nis: string;
     healthUnity: string;
+    studentRa: string;
     registration: string;
   }[]
   pagination: {

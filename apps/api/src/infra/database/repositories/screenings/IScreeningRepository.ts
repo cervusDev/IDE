@@ -19,6 +19,7 @@ export interface IScreeningRepository {
   createInformationalScreening(inputData: ICreateInformationalScreeningInputData): Promise<void>;
   listByRegistration(inputData: IListByRegistrationInputData): Promise<IListByRegistrationOutputData>;
   findById(inputData: IFindByIdInputData): Promise<IFindByIdOutputData>;
+  updateAllStudentAge(): Promise<void>;
   findInformationalScreeningByRegistration(inputData: IFindInformationalScreeningByRegistrationInputData): Promise<IFindInformationalScreeningByRegistrationOutputData>
   listInformationalScreening(inputData: IListInformationScreeningInputData): Promise<IListInformationalScreeningOutput>;
   updateInformationalScreening(inputData: IUpdateInformationalScreeningInputData): Promise<void>;

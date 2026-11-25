@@ -43,6 +43,7 @@ export class Bootstrap implements IBootstrap {
   }
 
   private handleBootstrapError(err: unknown): void {
+    console.log(err)
     if (err instanceof Error) {
       helperLogger.error({
         message: `🛑 Erro ao iniciar ${generalEnv.name}`,

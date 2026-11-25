@@ -1,3 +1,4 @@
+import { makeCountScreeningController } from '@application/controllers/screenings/count/factory';
 import { IRoute } from '../IRoute';
 import { makeCreateScreeningController } from '@application/controllers/screenings/create/factory';
 import { createScreeningControllerBody } from '@application/controllers/screenings/create/schemas';
@@ -11,6 +12,7 @@ import { makeListScreeningByRegistrationController } from '@application/controll
 import { listScreeningByRegistrationControllerQuerySchema, listScreeningByRegistrationControllerResponseSchema } from '@application/controllers/screenings/listByRegistration/schemas';
 import { makeUpdateScreeningController } from '@application/controllers/screenings/update/factory';
 import { updateScreeningControllerBody, updateScreeningControllerParams } from '@application/controllers/screenings/update/schemas';
+import { makeUpdateAllStudentsAgeController } from '@application/controllers/screenings/updateAllStudentsAge/factory';
 import makeAuthenticationMiddleware from '@application/middlewares/AuthenticationMiddleware/factory';
 import { EHttpCode } from '@infra/http/enums/HttpCode';
 
@@ -78,5 +80,17 @@ export const privateScreeningRoutes: IRoute[] = [
     schemas: {
       params: deleteScreeningControllerParamsSchema,
     }
+  },
+  {
+    method: 'POST',
+    path: '/screenings/update-all-ages',
+    controller: makeUpdateAllStudentsAgeController(),
+    middlewares: [makeAuthenticationMiddleware()]
+  },
+  {
+    method: 'GET',
+    path: '/screenings/count',
+    controller: makeCountScreeningController(),
+    middlewares: [makeAuthenticationMiddleware()]
   }
 ];

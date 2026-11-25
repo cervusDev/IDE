@@ -48,10 +48,10 @@ export class CreateScreeningController implements IController {
       },
       familyMembers: body.family_members.map((member) => ({
         fullName: member.full_name,
-        age: Number(member.age),
+        age: member.age,
         relationship: member.relationship,
-        educationalAttainment: member.educational_attainment || null,
-        contact: member.contact || null,
+        educationalAttainment: member.educational_attainment,
+        contact: member.contact,
       })),
       psychosocialEvaluation: {
         mentalHealthHistory: body.mental_health_history,

@@ -3,13 +3,11 @@ import { useFormContext } from "react-hook-form";
 import { FormSchemaType } from "../schema";
 import { Input } from "@/components/inputs/input";
 import { Select } from "@/components/inputs/select";
-import CommentEditor from "@/components/inputs/editor";
 
 export const StepGeneralData = () => {
   const {
     register,
     watch,
-    formState: { errors },
   } = useFormContext<FormSchemaType>();
 
   const studentGenderValue = watch("studentGender");
@@ -42,7 +40,7 @@ export const StepGeneralData = () => {
                 placeholder="Ex: UBS Central"
                 {...register("healthUnity")}
               />
-              <CommentEditor
+              {/* <CommentEditor
                 externalLogsIsOpen={false}
                 // initialContent={
                 //   (useDraftStore
@@ -55,7 +53,7 @@ export const StepGeneralData = () => {
                 onSubmit={() => { }}
                 isDisabled={false}
               // onUpdate={handleUpdateCommentDraft}
-              />
+              /> */}
             </div>
             <div className="md:col-span-5">
               <Input

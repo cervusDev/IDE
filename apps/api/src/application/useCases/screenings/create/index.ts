@@ -30,7 +30,9 @@ export class CreateScreeningUseCase implements IUseCase<IInputData, void> {
       familyMembers: inputData.familyMembers,
       informational: {
         ...inputData.informational,
-        grossHouseholdIncome: String(inputData.informational.grossHouseholdIncome)
+        version: 1,
+        isLatest: true,
+        assigneeId: inputData.assigneeId,
       },
       psychosocialEvaluation: inputData.psychosocialEvaluation
     });
